@@ -26,3 +26,25 @@ Test(player_new, _1) {
   cr_assert_eq(player->symbol, 'X');
   cr_assert_eq(player->score, 0);
 }
+
+// ####################
+// player_to_string
+// ####################
+Test(player_to_string, _1) {
+  Player *player = player_new("Player 1", 'X');
+
+  char *result= player_to_string(player);
+  char *expected = "Player 1 (X) 0";
+
+  cr_assert_eq(strcmp(result, expected), 0);
+}
+
+Test(player_to_string, _2) {
+  Player *player = player_new("Who?", 'G');
+  player->score = 666;
+
+  char *result= player_to_string(player);
+  char *expected = "Who? (G) 666";
+
+  cr_assert_eq(strcmp(result, expected), 0);
+}

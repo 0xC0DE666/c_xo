@@ -5,3 +5,4 @@ typedef struct {
 } Player;
 
 Player *player_new(char *name, char symbol);
+char *player_to_string(Player *player);

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "player.h"
 
@@ -14,4 +15,18 @@ Player *player_new(char *name, char symbol) {
   player->score = 0;
 
   return player;
+}
+
+char *player_to_string(Player *player) {
+  char *str = malloc(100 * sizeof(char));
+
+  sprintf(
+    str,
+    "%s (%c) %d",
+    player->name,
+    player->symbol,
+    player->score
+  ); 
+
+  return str;
 }
