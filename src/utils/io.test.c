@@ -1,6 +1,7 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
+#include "io.h"
 
 // ####################
 // string_length
