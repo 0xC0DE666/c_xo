@@ -2,6 +2,8 @@
 // BOARD
 // ####################
 
+static const char BLANK = ' ';
+
 // POSITION
 
 typedef struct {
@@ -16,7 +18,7 @@ char* position_to_string(Position* position);
 // SQUARE
 
 typedef struct {
-   Position* position;
+  Position* position;
   char mark;
 } Square;
 
@@ -28,7 +30,7 @@ char* square_to_string(Square* square);
 
 typedef struct {
   int marks;
-  char values[3][3];
+  Square* squares[3][3];
 } Board;
 
 Board* board_new();

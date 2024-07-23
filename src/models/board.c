@@ -86,7 +86,7 @@ Board* board_new() {
   board->marks = 0;
   for (int r = 0; r < 3; ++r) {
     for (int c = 0; c < 3; ++c) {
-      board->values[r][c] = ' ';
+      board->squares[r][c] = square_new(position_new(r, c), BLANK);
     }
   }
 
