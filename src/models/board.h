@@ -9,19 +9,19 @@ typedef struct {
   int column;
 } Position;
 
-Position *position_new(int row, int column);
-char *position_to_string(Position *position);
+Position* position_new(int row, int column);
+char* position_to_string(Position* position);
 
 
 // SQUARE
 
 typedef struct {
-   Position *position;
+   Position* position;
   char mark;
 } Square;
 
-Square *square_new(Position *position, char mark);
-char *square_to_string(Square *square);
+Square* square_new(Position* position, char mark);
+char* square_to_string(Square* square);
 
 
 // BOARD
@@ -31,5 +31,5 @@ typedef struct {
   char values[3][3];
 } Board;
 
-Board *board_new();
-char *board_to_string(Board *board);
+Board* board_new();
+char* board_to_string(Board* board);

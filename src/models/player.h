@@ -1,8 +1,8 @@
 typedef struct {
-  char *name;
+  char* name;
   char symbol;
   int score;
 } Player;
 
-Player *player_new(char *name, char symbol);
-char *player_to_string(Player *player);
+Player* player_new(char* name, char symbol);
+char* player_to_string(Player* player);

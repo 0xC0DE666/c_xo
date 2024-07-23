@@ -10,7 +10,7 @@
 // player_new
 // ####################
 Test(player_new, _1) {
-  Player *player = player_new("Player 1", 'X');
+  Player* player = player_new("Player 1", 'X');
 
   cr_assert_eq(player != NULL, true);
   cr_assert_eq(strcmp(player->name, "Player 1"), 0);
@@ -22,10 +22,10 @@ Test(player_new, _1) {
 // player_to_string
 // ####################
 Test(player_to_string, _1) {
-  Player *player = player_new("Player 1", 'X');
+  Player* player = player_new("Player 1", 'X');
 
-  char *result= player_to_string(player);
-  char *expected = "Player 1 (X) 0";
+  char* result= player_to_string(player);
+  char* expected = "Player 1 (X) 0";
 
   cr_assert_eq(strcmp(result, expected), 0);
 }

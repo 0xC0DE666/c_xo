@@ -3,8 +3,8 @@
 
 #include "player.h"
 
-Player *player_new(char *name, char symbol) {
-  Player *player = malloc(sizeof(Player));
+Player* player_new(char* name, char symbol) {
+  Player* player = malloc(sizeof(Player));
 
   if (player == NULL) {
     return NULL;
@@ -17,8 +17,8 @@ Player *player_new(char *name, char symbol) {
   return player;
 }
 
-char *player_to_string(Player *player) {
-  char *str = malloc(100 * sizeof(char));
+char* player_to_string(Player* player) {
+  char* str = malloc(100 * sizeof(char));
 
   sprintf(
     str,

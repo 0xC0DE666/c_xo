@@ -9,8 +9,8 @@
 
 // POSITION
 
-Position *position_new(int row, int column) {
-  Position *position = malloc(sizeof(Position));
+Position* position_new(int row, int column) {
+  Position* position = malloc(sizeof(Position));
 
   if (position == NULL) {
     return NULL;
@@ -22,8 +22,8 @@ Position *position_new(int row, int column) {
   return position;
 }
 
-char *position_to_string(Position *position) {
-  char *str = malloc(10 * sizeof(char));
+char* position_to_string(Position* position) {
+  char* str = malloc(10 * sizeof(char));
 
   if (str == NULL) {
     return NULL;
@@ -42,8 +42,8 @@ char *position_to_string(Position *position) {
 
 // SQUARE
 
-Square *square_new(Position *position, char mark) {
-  Square *square = malloc(sizeof(Square));
+Square* square_new(Position* position, char mark) {
+  Square* square = malloc(sizeof(Square));
 
   if (square == NULL) {
     return NULL;
@@ -55,8 +55,8 @@ Square *square_new(Position *position, char mark) {
   return square;
 }
 
-char *square_to_string(Square *square) {
-  char *str = malloc(20 * sizeof(char));
+char* square_to_string(Square* square) {
+  char* str = malloc(20 * sizeof(char));
 
   if (str == NULL) {
     return NULL;
@@ -76,8 +76,8 @@ char *square_to_string(Square *square) {
 
 // BOARD
 
-Board *board_new() {
-  Board *board = malloc(sizeof(Board));
+Board* board_new() {
+  Board* board = malloc(sizeof(Board));
 
   if (board == NULL) {
     return NULL;
@@ -93,8 +93,8 @@ Board *board_new() {
   return board;
 }
 
-// char *board_to_string(Board *board) {
-//   char *str = malloc(100 * sizeof(char));
+// char* board_to_string(Board* board) {
+//   char* str = malloc(100 * sizeof(char));
 // 
 //   sprintf(
 //     str,
