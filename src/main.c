@@ -10,6 +10,6 @@ int main() {
   printf("C XO\n");
 
   printf("%d %d\n", true, false);
-      
+
   return 0;
 }

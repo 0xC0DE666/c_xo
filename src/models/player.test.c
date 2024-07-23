@@ -16,6 +16,21 @@ Test(player_new, _1) {
   cr_assert_eq(strcmp(player->name, "Player 1"), 0);
   cr_assert_eq(player->symbol, 'X');
   cr_assert_eq(player->score, 0);
+
+  player_free(&player);
+}
+
+// ####################
+// player_free
+// ####################
+Test(player_free, _1) {
+  Player* player = player_new("Player 2", 'O');
+
+  cr_assert_eq(player == NULL, false);
+
+  player_free(&player);
+
+  cr_assert_eq(player, NULL);
 }
 
 // ####################

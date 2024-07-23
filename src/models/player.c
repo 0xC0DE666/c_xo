@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "../utils/io.h"
 #include "player.h"
 
 Player* player_new(char* name, char symbol) {
@@ -17,8 +18,13 @@ Player* player_new(char* name, char symbol) {
   return player;
 }
 
+void player_free(Player** player) {
+  free(*player);
+  *player = NULL;
+}
+
 char* player_to_string(Player* player) {
-  char* str = malloc(100 * sizeof(char));
+  char* str = string_new(64);
 
   sprintf(
     str,

@@ -8,18 +8,19 @@
 // ####################
 // string_new
 // ####################
-// Test(string_new, _1) {
-//   char* str = string_new(32);
-// 
-//   cr_assert_eq(str == NULL, false);
-// 
-//   str = "Some string...";
-//   char* expected = "Some string...";
-// 
-//   cr_assert_eq(strcmp(str, expected), false);
-// 
-//   string_free(&str);
-// }
+Test(string_new, _1) {
+  char* str = string_new(32);
+
+  cr_assert_eq(str == NULL, false);
+
+  sprintf(str, "Some string...");
+
+  char* expected = "Some string...";
+
+  cr_assert_eq(strcmp(str, expected), false);
+
+  string_free(&str);
+}
 
 // ####################
 // string_free

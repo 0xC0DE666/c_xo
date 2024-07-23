@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "../utils/io.h"
 #include "board.h"
 
 // ####################
@@ -28,7 +29,7 @@ void position_free(Position** position) {
 }
 
 char* position_to_string(Position* position) {
-  char* str = malloc(10 * sizeof(char));
+  char* str = string_new(10);
 
   if (str == NULL) {
     return NULL;
@@ -67,7 +68,7 @@ void square_free(Square** square) {
 }
 
 char* square_to_string(Square* square) {
-  char* str = malloc(20 * sizeof(char));
+  char* str = string_new(20);
 
   if (str == NULL) {
     return NULL;
@@ -118,8 +119,7 @@ void board_free(Board** board) {
 }
 
 // char* board_to_string(Board* board) {
-//   char* str = malloc(100 * sizeof(char));
-//   char* temp = malloc(50 * sizeof(char));
+//   char* str = string_new(100);
 // 
 //   for (int r = 0; r < 3; ++r) {
 //     for (int c = 0; c < 3; ++c) {
