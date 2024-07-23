@@ -12,6 +12,7 @@ typedef struct {
 } Position;
 
 Position* position_new(int row, int column);
+void position_free(Position** position);
 char* position_to_string(Position* position);
 
 
@@ -23,6 +24,7 @@ typedef struct {
 } Square;
 
 Square* square_new(Position* position, char mark);
+void square_free(Square** square);
 char* square_to_string(Square* square);
 
 

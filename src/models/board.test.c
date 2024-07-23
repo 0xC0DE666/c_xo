@@ -4,6 +4,7 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
+#include "../utils/io.h"
 #include "board.h"
 
 // ####################
@@ -15,6 +16,21 @@ Test(position_new, _1) {
   cr_assert_eq(position != NULL, true);
   cr_assert_eq(position->row, 1);
   cr_assert_eq(position->column, 2);
+
+  position_free(&position);
+}
+
+// ####################
+// position_free
+// ####################
+Test(position_free, _1) {
+  Position* position = position_new(1, 2);
+
+  cr_assert_eq(position == NULL, false);
+
+  position_free(&position);
+
+  cr_assert_eq(position, NULL);
 }
 
 // ####################
@@ -27,6 +43,9 @@ Test(position_to_string, _1) {
   char* expected = "(5, 3)";
 
   cr_assert_eq(strcmp(result, expected), 0);
+
+  position_free(&position);
+  string_free(&result);
 }
 
 
@@ -40,6 +59,21 @@ Test(square_new, _1) {
   cr_assert_eq(square->position->row, 0);
   cr_assert_eq(square->position->column, 1);
   cr_assert_eq(square->mark, 'O');
+
+  square_free(&square);
+}
+
+// ####################
+// square_free
+// ####################
+Test(square_free, _1) {
+  Square* square = square_new(position_new(1, 2), BLANK);
+
+  cr_assert_eq(square == NULL, false);
+
+  square_free(&square);
+
+  cr_assert_eq(square, NULL);
 }
 
 // ####################
@@ -52,6 +86,9 @@ Test(square_to_string, _1) {
   char* expected = "(1, 1, X)";
 
   cr_assert_eq(strcmp(result, expected), 0);
+
+  square_free(&square);
+  string_free(&result);
 }
 
 

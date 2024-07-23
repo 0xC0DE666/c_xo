@@ -22,6 +22,11 @@ Position* position_new(int row, int column) {
   return position;
 }
 
+void position_free(Position** position) {
+  free(*position);
+  *position = NULL;
+}
+
 char* position_to_string(Position* position) {
   char* str = malloc(10 * sizeof(char));
 
@@ -53,6 +58,12 @@ Square* square_new(Position* position, char mark) {
   square->mark = mark;
 
   return square;
+}
+
+void square_free(Square** square) {
+  position_free(&(*square)->position);
+  free(*square);
+  *square = NULL;
 }
 
 char* square_to_string(Square* square) {
@@ -95,6 +106,13 @@ Board* board_new() {
 
 // char* board_to_string(Board* board) {
 //   char* str = malloc(100 * sizeof(char));
+//   char* temp = malloc(50 * sizeof(char));
+// 
+//   for (int r = 0; r < 3; ++r) {
+//     for (int c = 0; c < 3; ++c) {
+//       board->squares[r][c] = square_new(position_new(r, c), BLANK);
+//     }
+//   }
 // 
 //   sprintf(
 //     str,

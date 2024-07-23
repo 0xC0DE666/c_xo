@@ -1,4 +1,30 @@
+#include <stdlib.h>
 #include <stdio.h>
+
+char* string_new(int length) {
+  char* string = malloc(length * sizeof(char));
+
+  if (string == NULL) {
+    return NULL;
+  }
+
+  // string = "";
+
+  return string;
+}
+
+void string_free(char** string) {
+  free(*string);
+  *string = NULL;
+}
+
+int string_length(char* string) {
+  int i = 0;
+  while (string[i]) {
+    ++i;
+  }
+  return i;
+}
 
 int read_line(char buffer[], int size) {
   int i, c;
@@ -6,13 +32,5 @@ int read_line(char buffer[], int size) {
     buffer[i] = c;
   }
   buffer[i] = '\0';
-  return i;
-}
-
-int string_length(char buffer[]) {
-  int i = 0;
-  while (buffer[i]) {
-    ++i;
-  }
   return i;
 }
