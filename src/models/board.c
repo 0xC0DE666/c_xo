@@ -3,6 +3,79 @@
 
 #include "board.h"
 
+// ####################
+// BOARD
+// ####################
+
+// POSITION
+
+Position *position_new(int row, int column) {
+  Position *position = malloc(sizeof(Position));
+
+  if (position == NULL) {
+    return NULL;
+  }
+
+  position->row = row;
+  position->column = column;
+
+  return position;
+}
+
+char *position_to_string(Position *position) {
+  char *str = malloc(10 * sizeof(char));
+
+  if (str == NULL) {
+    return NULL;
+  }
+
+  sprintf(
+    str,
+    "(%d, %d)",
+    position->row,
+    position->column
+  );
+
+  return str;
+}
+
+
+// SQUARE
+
+Square *square_new(Position *position, char mark) {
+  Square *square = malloc(sizeof(Square));
+
+  if (square == NULL) {
+    return NULL;
+  }
+
+  square->position = position;
+  square->mark = mark;
+
+  return square;
+}
+
+char *square_to_string(Square *square) {
+  char *str = malloc(20 * sizeof(char));
+
+  if (str == NULL) {
+    return NULL;
+  }
+
+  sprintf(
+    str,
+    "(%d, %d, %c)",
+    square->position->row,
+    square->position->column,
+    square->mark
+  );
+
+  return str;
+}
+
+
+// BOARD
+
 Board *board_new() {
   Board *board = malloc(sizeof(Board));
 

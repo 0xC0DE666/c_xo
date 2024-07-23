@@ -7,11 +7,51 @@
 #include "board.h"
 
 // ####################
-// board
+// position_new
 // ####################
-Test(board, pass) {
-  int result = 10;
-  cr_assert_eq(result, 10);
+Test(position_new, _1) {
+  Position *position = position_new(1, 2);
+
+  cr_assert_eq(position != NULL, true);
+  cr_assert_eq(position->row, 1);
+  cr_assert_eq(position->column, 2);
+}
+
+// ####################
+// position_to_string
+// ####################
+Test(position_to_string, _1) {
+  Position *position = position_new(5, 3);
+
+  char *result= position_to_string(position);
+  char *expected = "(5, 3)";
+
+  cr_assert_eq(strcmp(result, expected), 0);
+}
+
+
+// ####################
+// square_new
+// ####################
+Test(square_new, _1) {
+  Square *square = square_new(position_new(0, 1), 'O');
+
+  cr_assert_eq(square != NULL, true);
+  cr_assert_eq(square->position->row, 0);
+  cr_assert_eq(square->position->column, 1);
+  cr_assert_eq(square->mark, 'O');
+}
+
+// ####################
+// square_to_string
+// ####################
+Test(square_to_string, _1) {
+  Square *square = square_new(position_new(1, 1), 'X');
+
+  char *result= square_to_string(square);
+  char *expected = "(1, 1, X)";
+
+  cr_assert_eq(strcmp(result, expected), 0);
 }
 
 

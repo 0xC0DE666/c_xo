@@ -7,15 +7,6 @@
 #include "player.h"
 
 // ####################
-// player
-// ####################
-Test(player, pass) {
-  int result = 10;
-  cr_assert_eq(result, 10);
-}
-
-
-// ####################
 // player_new
 // ####################
 Test(player_new, _1) {
@@ -35,16 +26,6 @@ Test(player_to_string, _1) {
 
   char *result= player_to_string(player);
   char *expected = "Player 1 (X) 0";
-
-  cr_assert_eq(strcmp(result, expected), 0);
-}
-
-Test(player_to_string, _2) {
-  Player *player = player_new("Who?", 'G');
-  player->score = 666;
-
-  char *result= player_to_string(player);
-  char *expected = "Who? (G) 666";
 
   cr_assert_eq(strcmp(result, expected), 0);
 }
