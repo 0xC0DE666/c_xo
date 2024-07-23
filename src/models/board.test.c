@@ -109,6 +109,19 @@ Test(board_new, _1) {
 }
 
 // ####################
+// board_free
+// ####################
+Test(board_free, _1) {
+  Board* board = board_new();
+
+  cr_assert_eq(board == NULL, false);
+
+  board_free(&board);
+
+  cr_assert_eq(board, NULL);
+}
+
+// ####################
 // board_to_string
 // ####################
 // Test(board_to_string, _1) {

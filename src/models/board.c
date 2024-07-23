@@ -104,6 +104,19 @@ Board* board_new() {
   return board;
 }
 
+void board_free(Board** board) {
+  for (int r = 0; r < 3; ++r) {
+    for (int c = 0; c < 3; ++c) {
+      Position** p = &((*board)->squares[r][c]->position);
+      position_free(p);
+      Square** s = &((*board)->squares[r][c]);
+      square_free(s);
+    }
+  }
+  free(*board);
+  (*board) = NULL;
+}
+
 // char* board_to_string(Board* board) {
 //   char* str = malloc(100 * sizeof(char));
 //   char* temp = malloc(50 * sizeof(char));

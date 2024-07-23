@@ -36,4 +36,5 @@ typedef struct {
 } Board;
 
 Board* board_new();
+void board_free(Board** board);
 char* board_to_string(Board* board);
