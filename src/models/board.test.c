@@ -106,6 +106,8 @@ Test(board_new, _1) {
       cr_assert_eq(board->squares[r][c]->mark, BLANK);
     }
   }
+
+  board_free(&board);
 }
 
 // ####################
@@ -155,6 +157,25 @@ Test(board_mark, _1) {
   int row = position->row;
   int col = position->column;
   char result = board->squares[row][col]->mark;
+
+  cr_assert_eq(result, 'X');
+
+  board_free(&board);
+  position_free(&position);
+}
+
+// ####################
+// board_get_mark
+// ####################
+Test(board_get_mark, _1) {
+  Board* board = board_new();
+  Position* position = position_new(1, 1);
+
+  board_mark(board, position, 'X');
+
+  int row = position->row;
+  int col = position->column;
+  char result = board_get_mark(board, position);
 
   cr_assert_eq(result, 'X');
 

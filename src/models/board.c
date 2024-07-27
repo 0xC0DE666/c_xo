@@ -143,3 +143,9 @@ void board_mark(Board* board, Position* position, char mark) {
   int col = position->column;
   board->squares[row][col]->mark = mark;
 }
+
+char board_get_mark(Board* board, Position* position) {
+  int row = position->row;
+  int col = position->column;
+  return board->squares[row][col]->mark;
+}
