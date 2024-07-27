@@ -38,3 +38,4 @@ typedef struct {
 Board* board_new();
 void board_free(Board** board);
 char* board_to_string(Board* board);
+void board_mark(Board* board, Position* position, char mark);

@@ -142,3 +142,22 @@ Test(board_free, _1) {
 // 
 //   cr_assert_eq(strcmp(result, expected), 0);
 // }
+
+// ####################
+// board_mark
+// ####################
+Test(board_mark, _1) {
+  Board* board = board_new();
+  Position* position = position_new(1, 1);
+
+  board_mark(board, position, 'X');
+
+  int row = position->row;
+  int col = position->column;
+  char result = board->squares[row][col]->mark;
+
+  cr_assert_eq(result, 'X');
+
+  board_free(&board);
+  position_free(&position);
+}

@@ -137,3 +137,9 @@ void board_free(Board** board) {
 // 
 //   return str;
 // }
+
+void board_mark(Board* board, Position* position, char mark) {
+  int row = position->row;
+  int col = position->column;
+  board->squares[row][col]->mark = mark;
+}
