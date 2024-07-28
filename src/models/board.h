@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 // ####################
 // BOARD
 // ####################
@@ -31,6 +33,7 @@ char* square_to_string(Square* square);
 // BOARD
 
 typedef struct {
+  int size;
   int marks;
   Square* squares[3][3];
 } Board;
@@ -40,3 +43,7 @@ void board_free(Board** board);
 char* board_to_string(Board* board);
 void board_mark(Board* board, Position* position, char mark);
 char board_get_mark(Board* board, Position* position);
+
+
+bool check_line(char line[], int length);
+bool check_win(Board* board, int x_in_a_row);

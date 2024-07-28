@@ -182,3 +182,18 @@ Test(board_get_mark, _1) {
   board_free(&board);
   position_free(&position);
 }
+
+// ####################
+// check_line
+// ####################
+Test(check_line, _1) {
+  char line1[] = {' ', 'X', ' '};
+  bool result = check_line(line1, 3);
+
+  cr_assert_eq(result, false);
+  
+  char line2[] = {'X', 'X', 'X'};
+  result = check_line(line2, 3);
+
+  cr_assert_eq(result, true);
+}
