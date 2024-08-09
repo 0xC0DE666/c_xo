@@ -1,8 +1,3 @@
-# directories
-bin/
-out/
-
-# executables
-app
-test
-*.out
+/bin/*
+/obj/*
+.env
