@@ -1,9 +1,9 @@
-CC = gcc
-C_FLAGS = -g -Wall -Wextra
+CC := gcc
+C_FLAGS := -g -Wall -Wextra
 
-SRC_D = ./src
-OBJ_D = ./obj
-BIN_D = ./bin
+SRC_D := ./src
+OBJ_D := ./obj
+BIN_D := ./bin
 
 all: 	clean \
 			io.o io_test.o \
@@ -14,7 +14,7 @@ all: 	clean \
 # RELEASE
 #------------------------------
 
-release: C_FLAGS = -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
+release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
 release: 	clean \
 			io.o io_test.o \
 			player.o player_test.o board.o board_test.o \
@@ -35,7 +35,7 @@ main: io.o player.o board.o main.o
 # MODELS
 #------------------------------
 
-MODELS_D = $(SRC_D)/models
+MODELS_D := $(SRC_D)/models
 
 player.o: io.o
 	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(MODELS_D)/player.c;
@@ -53,7 +53,7 @@ board_test.o: io.o board.o;
 # UTILS
 #------------------------------
 
-UTILS_D = $(SRC_D)/utils
+UTILS_D := $(SRC_D)/utils
 
 io.o:
 	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(UTILS_D)/io.c;
