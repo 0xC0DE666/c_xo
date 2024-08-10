@@ -4,7 +4,7 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
-#include "player.h"
+#include "../app/models/player.h"
 
 // ####################
 // player_new

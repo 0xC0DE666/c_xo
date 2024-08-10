@@ -1,69 +1,53 @@
 CC := gcc
 C_FLAGS := -g -Wall -Wextra
 
-SRC_D := ./src
-OBJ_D := ./obj
-BIN_D := ./bin
+APP_DIR := ./src/app
+TEST_DIR := ./src/test
+OBJ_DIR := ./obj
+BIN_DIR := ./bin
 
-all: 	clean \
-			io.o io_test.o \
-			player.o player_test.o board.o board_test.o \
-			main.o main
+#------------------------------
+# APP
+#------------------------------
+
+APP_DIRS = ./src/app/models ./src/app/utils
+APP_SRCS = $(foreach dir, $(APP_DIRS), $(wildcard $(dir)/*.c))
+APP_OBJS := $(patsubst %.c, %.o, $(APP_SRCS))
+
+$(APP_SRCS):
+	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
+
+main.o: $(APP_OBJS);
+	$(CC) $(C_FLAGS) -c -o $(APP_DIR)/main.o src/app/main.c;
+
+app: main.o $(APP_OBJS);
+	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_DIR)/main.o $(APP_OBJS);
+
+
+#------------------------------
+# TESTS
+#------------------------------
+
+TEST_DIR := ./src/test
+TEST_SRCS := $(wildcard $(TEST_DIR)/*.c)
+TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
+
+$(TEST_SRCS):
+	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
+
+test: $(APP_OBJS) $(TEST_OBJS);
+	$(CC) $(C_FLAGS) -lcriterion -o $(BIN_DIR)/$@ $(APP_OBJS) $(TEST_OBJS);
+
 
 #------------------------------
 # RELEASE
 #------------------------------
 
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
-release: 	clean \
-			io.o io_test.o \
-			player.o player_test.o board.o board_test.o \
-			main.o main
-
-#------------------------------
-# MAIN
-#------------------------------
-
-main.o:
-	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(SRC_D)/main.c;
-
-main: io.o player.o board.o main.o
-	$(CC) $(C_FLAGS) -o $(BIN_D)/$@ $(OBJ_D)/io.o $(OBJ_D)/player.o $(OBJ_D)/board.o $(OBJ_D)/main.o;
+release: 	clean app test;
 
 
-#------------------------------
-# MODELS
-#------------------------------
-
-MODELS_D := $(SRC_D)/models
-
-player.o: io.o
-	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(MODELS_D)/player.c;
-
-player_test.o: io.o player.o;
-	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(MODELS_D)/player_test.c;
-
-board.o: io.o
-	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(MODELS_D)/board.c;
-
-board_test.o: io.o board.o;
-	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(MODELS_D)/board_test.c;
-
-#------------------------------
-# UTILS
-#------------------------------
-
-UTILS_D := $(SRC_D)/utils
-
-io.o:
-	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(UTILS_D)/io.c;
-
-io_test.o: io.o;
-	$(CC) $(C_FLAGS) -c -o $(OBJ_D)/$@ $(UTILS_D)/io_test.c;
-
-#------------------------------
-# MISC
-#------------------------------
+all: clean app test;
 
 clean:
-	rm -f $(OBJ_D)/* $(BIN_D)/*;
+	rm -f $(APP_DIR)/main.o $(APP_OBJS) $(TEST_OBJS) $(BIN_DIR)/*;

@@ -4,8 +4,8 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
-#include "../utils/io.h"
-#include "board.h"
+#include "../app/utils/io.h"
+#include "../app/models/board.h"
 
 // ####################
 // position_new
