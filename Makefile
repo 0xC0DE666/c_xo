@@ -6,6 +6,11 @@ TEST_DIR := ./src/test
 OBJ_DIR := ./obj
 BIN_DIR := ./bin
 
+all: clean app test;
+
+clean:
+	rm -f $(APP_DIR)/main.o $(APP_OBJS) $(TEST_OBJS) $(OBJ_DIR)/* $(BIN_DIR)/*;
+
 #------------------------------
 # APP
 #------------------------------
@@ -45,9 +50,3 @@ test: $(APP_OBJS) $(TEST_OBJS);
 
 release: C_FLAGS := -std=c99 -O2 -g -DNDDEBUG -Wall -Wextra
 release: 	clean app test;
-
-
-all: clean app test;
-
-clean:
-	rm -f $(APP_DIR)/main.o $(APP_OBJS) $(TEST_OBJS) $(BIN_DIR)/*;
