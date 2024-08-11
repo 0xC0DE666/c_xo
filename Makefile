@@ -5,6 +5,7 @@ APP_DIR := ./src/app
 TEST_DIR := ./src/test
 OBJ_DIR := ./obj
 BIN_DIR := ./bin
+LIB_DIR := ./lib
 
 all: clean app test;
 
@@ -23,17 +24,17 @@ $(APP_SRCS):
 	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
 
 main.o: $(APP_OBJS);
-	$(CC) $(C_FLAGS) -c -o $(APP_DIR)/main.o src/app/main.c;
+	$(CC) $(C_FLAGS) -c -o $(APP_DIR)/main.o ./src/app/main.c;
 
 app: main.o $(APP_OBJS);
-	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_DIR)/main.o $(APP_OBJS);
+	$(CC) $(C_FLAGS) -L$(LIB_DIR) -lc_structs -o $(BIN_DIR)/$@ $(APP_DIR)/main.o $(APP_OBJS);
 
 
 #------------------------------
 # TESTS
 #------------------------------
 
-TEST_DIR := ./src/test
+TEST_DIR := src/test
 TEST_SRCS := $(wildcard $(TEST_DIR)/*.c)
 TEST_OBJS := $(patsubst %.c, %.o, $(TEST_SRCS))
 
