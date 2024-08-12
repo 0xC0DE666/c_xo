@@ -1,11 +1,11 @@
 CC := gcc
 C_FLAGS := -g -Wall -Wextra
 
+LIBS_DIR := ./src/libs
 APP_DIR := ./src/app
 TEST_DIR := ./src/test
 OBJ_DIR := ./obj
 BIN_DIR := ./bin
-LIB_DIR := ./lib
 
 all: clean app test;
 
@@ -16,8 +16,8 @@ clean:
 # APP
 #------------------------------
 
-APP_DIRS = ./src/app/models ./src/app/utils
-APP_SRCS = $(foreach dir, $(APP_DIRS), $(wildcard $(dir)/*.c))
+APP_DIRS := ./src/app/models ./src/app/utils
+APP_SRCS := $(foreach dir, $(APP_DIRS), $(wildcard $(dir)/*.c))
 APP_OBJS := $(patsubst %.c, %.o, $(APP_SRCS))
 
 $(APP_SRCS):
@@ -27,7 +27,7 @@ main.o: $(APP_OBJS);
 	$(CC) $(C_FLAGS) -c -o $(APP_DIR)/main.o ./src/app/main.c;
 
 app: main.o $(APP_OBJS);
-	$(CC) $(C_FLAGS) -L$(LIB_DIR) -lc_structs -o $(BIN_DIR)/$@ $(APP_DIR)/main.o $(APP_OBJS);
+	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_DIR)/main.o $(APP_OBJS) -L$(LIBS_DIR) -lc_structs;
 
 
 #------------------------------
@@ -42,7 +42,7 @@ $(TEST_SRCS):
 	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
 
 test: $(APP_OBJS) $(TEST_OBJS);
-	$(CC) $(C_FLAGS) -lcriterion -o $(BIN_DIR)/$@ $(APP_OBJS) $(TEST_OBJS);
+	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_OBJS) $(TEST_OBJS) -L$(LIBS_DIR) -lc_structs -lcriterion;
 
 
 #------------------------------

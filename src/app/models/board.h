@@ -1,4 +1,7 @@
 #include <stdbool.h>
+#include <stdbool.h>
+
+#include "../../libs/matrix.h"
 
 // ####################
 // BOARD
@@ -6,44 +9,13 @@
 
 static const char BLANK = ' ';
 
-// POSITION
-
-typedef struct {
-  int row;
-  int column;
-} Position;
-
-Position* position_new(int row, int column);
-void position_free(Position** position);
-char* position_to_string(Position* position);
-
-
 // SQUARE
 
 typedef struct {
-  Position* position;
+  Position position;
   char mark;
 } Square;
 
-Square* square_new(Position* position, char mark);
+Square* square_new(Position position, char mark);
 void square_free(Square** square);
 char* square_to_string(Square* square);
-
-
-// BOARD
-
-typedef struct {
-  int size;
-  int marks;
-  Square* squares[3][3];
-} Board;
-
-Board* board_new();
-void board_free(Board** board);
-char* board_to_string(Board* board);
-void board_mark(Board* board, Position* position, char mark);
-char board_get_mark(Board* board, Position* position);
-
-
-bool check_line(char line[], int length);
-bool check_win(Board* board, int x_in_a_row);
