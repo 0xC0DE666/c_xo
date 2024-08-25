@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 
-#include "../libs/matrix.h"
+#include "../libs/c_structs.h"
 
 #include "utils/io.h"
 #include "models/player.h"

@@ -48,3 +48,51 @@ Test(square_to_string, _1) {
   square_free(&square);
   string_free(&result);
 }
+
+// ####################
+// win_line
+// ####################
+Test(win_line, false_blank_sqr) {
+  Array* line = array_new(3);
+
+  for (unsigned i = 0; i < line->capacity; i++) {
+    Square* sqr = square_new(position_new(0, i), i == 0 ? BLANK : 'X');
+    array_append(line, sqr);
+  }
+  
+  bool result = win_line(line, line->size);
+
+  cr_assert_eq(result, false);
+
+  array_free(&line, (FreeFn) square_free);
+}
+
+Test(win_line, false_marks_differ) {
+  Array* line = array_new(3);
+
+  for (unsigned i = 0; i < line->capacity; i++) {
+    Square* sqr = square_new(position_new(0, i), i == 0 ? 'O' : 'X');
+    array_append(line, sqr);
+  }
+  
+  bool result = win_line(line, line->size);
+
+  cr_assert_eq(result, false);
+
+  array_free(&line, (FreeFn) square_free);
+}
+
+Test(win_line, true_win) {
+  Array* line = array_new(3);
+
+  for (unsigned i = 0; i < line->capacity; i++) {
+    Square* sqr = square_new(position_new(0, i), 'X');
+    array_append(line, sqr);
+  }
+  
+  bool result = win_line(line, line->size);
+
+  cr_assert_eq(result, true);
+
+  array_free(&line, (FreeFn) square_free);
+}

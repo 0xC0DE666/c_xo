@@ -42,3 +42,18 @@ char* square_to_string(Square* square) {
   return str;
 }
 
+bool win_line(Array* line, unsigned n_to_win) {
+  for (unsigned i = 0; i < line->size - 1; ++i) {
+    Square* a = array_get(line, i);
+    Square* b = array_get(line, i + 1);
+
+    bool blank_sqr = a->mark == BLANK || b->mark == BLANK;
+    bool marks_differ = a->mark != b->mark;
+
+    if (blank_sqr || marks_differ) {
+        return false;
+    }
+  }
+
+  return true;
+}
