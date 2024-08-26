@@ -80,8 +80,7 @@ bool win_line(Array* line, unsigned n_to_win) {
   return true;
 }
 
-// TODO: split into win_straight() and win_diagonal()
-bool win(Matrix* board, unsigned n_to_win) {
+bool win_straight(Matrix* board, unsigned n_to_win) {
   // check straight lines
   Array* row = array_new(board->rows);
   Array* col = array_new(board->columns);
@@ -118,8 +117,11 @@ bool win(Matrix* board, unsigned n_to_win) {
     array_free(&col, NULL);
     return true;
   }
-  // printf("\n\n");
 
+  return false;
+}
+
+bool win_diagonal(Matrix* board, unsigned n_to_win) {
   // check diagonal lines
   unsigned left_row = 0;
   unsigned left_col = 0;
@@ -165,4 +167,15 @@ bool win(Matrix* board, unsigned n_to_win) {
   }
 
   return false;
+}
+
+// TODO: split into win_straight() and win_diagonal()
+bool win(Matrix* board, unsigned n_to_win) {
+  if (board->size < n_to_win) {
+    return false;
+  }
+  if (win_straight(board, n_to_win)) {
+    return true;
+  }
+  return win_diagonal(board, n_to_win)
 }
