@@ -112,13 +112,10 @@ bool win_straight(Matrix* board, unsigned n_to_win) {
     array_clear(col, NULL);
   }
 
-  if (win) {
-    array_free(&row, NULL);
-    array_free(&col, NULL);
-    return true;
-  }
+  array_free(&row, NULL);
+  array_free(&col, NULL);
 
-  return false;
+  return win;
 }
 
 bool win_diagonal(Matrix* board, unsigned n_to_win) {
@@ -151,6 +148,7 @@ bool win_diagonal(Matrix* board, unsigned n_to_win) {
       }
   }
 
+  bool win = false;
   if (win_line(left_line, n_to_win)) {
       // printf("win diag left down\n");
       win = true;
@@ -160,16 +158,12 @@ bool win_diagonal(Matrix* board, unsigned n_to_win) {
       win = true;
   }
 
-  if (win) {
-    array_free(&left_line, NULL);
-    array_free(&right_line, NULL);
-    return true;
-  }
+  array_free(&left_line, NULL);
+  array_free(&right_line, NULL);
 
-  return false;
+  return win;
 }
 
-// TODO: split into win_straight() and win_diagonal()
 bool win(Matrix* board, unsigned n_to_win) {
   if (board->size < n_to_win) {
     return false;
@@ -177,5 +171,5 @@ bool win(Matrix* board, unsigned n_to_win) {
   if (win_straight(board, n_to_win)) {
     return true;
   }
-  return win_diagonal(board, n_to_win)
+  return win_diagonal(board, n_to_win);
 }
