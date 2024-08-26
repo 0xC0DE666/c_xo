@@ -50,6 +50,41 @@ Test(square_to_string, _1) {
 }
 
 // ####################
+// board_new
+// ####################
+Test(board_new, _1) {
+  Matrix* board = board_new(3, 3);
+
+  for (unsigned r = 0; r < board->rows; r++) {
+    for (unsigned c = 0; c < board->columns; c++) {
+      Position pos = position_new(r, c);
+      Square* sqr = matrix_get(board, &pos);
+      cr_assert_eq(sqr != NULL, true);
+      cr_assert_eq(sqr->position.row, r);
+      cr_assert_eq(sqr->position.column, c);
+      cr_assert_eq(sqr->mark, BLANK);
+    }
+  }
+
+  board_free(&board);
+}
+
+
+// ####################
+// board_free
+// ####################
+Test(board_free, _1) {
+  Matrix* board = board_new(3, 3);
+
+  cr_assert_eq(board == NULL, false);
+
+  board_free(&board);
+
+  cr_assert_eq(board, NULL);
+}
+
+
+// ####################
 // win_line
 // ####################
 Test(win_line, false_blank_sqr) {
@@ -100,16 +135,9 @@ Test(win_line, true_win) {
 // ####################
 // win
 // ####################
-Test(win_line, win_straight_lines) {
-  Matrix* board = matrix_new(3, 3);
+Test(win, win_straight_lines) {
+  Matrix* board = board_new(3, 3);
 
-  for (unsigned r = 0; r < board->rows; r++) {
-    for (unsigned c = 0; c < board->columns; c++) {
-      Position pos = position_new(r, c);
-      Square* sqr = square_new(pos, BLANK);
-      matrix_insert(board, &pos, sqr);
-    }
-  }
   // char* str_board = matrix_to_string(board, (ToStringFn) square_to_string);
   
   unsigned n_to_win = 3;
@@ -159,5 +187,11 @@ Test(win_line, win_straight_lines) {
     // printf("\n\n");
   }
 
-  matrix_free(&board, (FreeFn) square_free);
+  board_free(&board);
+}
+
+
+Test(win, win_diagonal_lines) {
+  Matrix* board = board_new(3, 3);
+   
 }

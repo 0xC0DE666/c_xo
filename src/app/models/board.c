@@ -42,6 +42,28 @@ char* square_to_string(Square* square) {
   return str;
 }
 
+
+// BOARD
+Matrix* board_new(unsigned rows, unsigned columns) {
+  Matrix* board = matrix_new(rows, columns);
+
+  for (unsigned r = 0; r < board->rows; r++) {
+    for (unsigned c = 0; c < board->columns; c++) {
+      Position pos = position_new(r, c);
+      Square* sqr = square_new(pos, BLANK);
+      matrix_insert(board, &pos, sqr);
+    }
+  }
+
+  return board;
+}
+
+void board_free(Matrix** board) {
+  matrix_free(board, (FreeFn) square_free);
+}
+
+
+// WIN
 bool win_line(Array* line, unsigned n_to_win) {
   for (unsigned i = 0; i < line->size - 1; ++i) {
     Square* a = (Square*) array_get(line, i);
