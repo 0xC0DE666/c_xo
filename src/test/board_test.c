@@ -193,5 +193,40 @@ Test(win, win_straight_lines) {
 
 Test(win, win_diagonal_lines) {
   Matrix* board = board_new(3, 3);
-   
+
+  // test left diagonal
+  for (unsigned c = 0; c < board->columns; c++) {
+    Position pos = position_new(c, c);
+    Square* sqr = (Square*) matrix_get(board, &pos);
+    sqr->mark = 'X';
+  }
+  // printf("%s\n", matrix_to_string(board, (ToStringFn) square_to_string));
+
+  unsigned n_to_win = 3;
+  bool result = win(board, n_to_win);
+
+  cr_assert_eq(result, true);
+
+  // reset values
+  for (unsigned c = 0; c < board->columns; c++) {
+    Position pos = position_new(c, c);
+    Square* sqr = (Square*) matrix_get(board, &pos);
+    sqr->mark = BLANK;
+  }
+
+
+  // test right diagonal
+  unsigned col = board->columns - 1;
+  for (unsigned c = 0; c < board->columns; c++) {
+    Position pos = position_new(c, col--);
+    Square* sqr = (Square*) matrix_get(board, &pos);
+    sqr->mark = 'X';
+  }
+  // printf("%s\n", matrix_to_string(board, (ToStringFn) square_to_string));
+
+  result = win(board, n_to_win);
+
+  cr_assert_eq(result, true);
+
+  board_free(&board);
 }

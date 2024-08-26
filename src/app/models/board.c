@@ -80,6 +80,7 @@ bool win_line(Array* line, unsigned n_to_win) {
   return true;
 }
 
+// TODO: split into win_straight() and win_diagonal()
 bool win(Matrix* board, unsigned n_to_win) {
   // check straight lines
   Array* row = array_new(board->rows);
@@ -99,14 +100,14 @@ bool win(Matrix* board, unsigned n_to_win) {
     // printf("win? %s\n", array_to_string(row, (ToStringFn) square_to_string));
     // printf("hello --> \n");
     if (win_line(row, n_to_win)) {
-        // printf("win row %d\n", r);
-        win = true;
-        break;
+      // printf("win row %d\n", r);
+      win = true;
+      break;
     }
     if (win_line(col, n_to_win)) {
-        // printf("win col %d\n", r);
-        win = true;
-        break;
+      // printf("win col %d\n", c);
+      win = true;
+      break;
     }
     array_clear(row, NULL);
     array_clear(col, NULL);
@@ -117,45 +118,51 @@ bool win(Matrix* board, unsigned n_to_win) {
     array_free(&col, NULL);
     return true;
   }
-  printf("\n\n");
+  // printf("\n\n");
 
-  // check diags
-  // let mut left_row = 0;
-  // let mut left_col = 0;
+  // check diagonal lines
+  unsigned left_row = 0;
+  unsigned left_col = 0;
 
-  // let mut right_row = 0;
-  // let mut right_col = 2;
+  unsigned right_row = 0;
+  unsigned right_col = board->columns - 1;
 
-  // let mut left_line: Vec<char> = vec![];
-  // let mut right_line: Vec<char> = vec![];
+  Array* left_line = array_new(board->rows);
+  Array* right_line = array_new(board->rows);
 
-  // for _i in 0..n {
-  //     let left_mark = board.get_mark(&Position {
-  //         row: left_row,
-  //         col: left_col,
-  //     });
-  //     let right_mark = board.get_mark(&Position {
-  //         row: right_row,
-  //         col: right_col,
-  //     });
+  for (unsigned i = 0; i < board->rows; ++i) {
+      Position left_pos = position_new(left_row, left_col);
+      Square* left_sqr = matrix_get(board, &left_pos);
 
-  //     left_line.push(left_mark);
-  //     right_line.push(right_mark);
+      Position right_pos = position_new(right_row, right_col);
+      Square* right_sqr = matrix_get(board, &right_pos);
 
-  //     left_row += 1;
-  //     left_col += 1;
+      array_append(left_line, left_sqr);
+      array_append(right_line, right_sqr);
 
-  //     right_row += 1;
-  //     if right_col > 0 {
-  //         right_col -= 1;
-  //     }
-  // }
-  // if check_line(&left_line) {
-  //     println!("win diag left down");
-  //     return true;
-  // } else if check_line(&right_line) {
-  //     println!("win diag right down");
-  //     return true;
-  // }
+      left_row += 1;
+      left_col += 1;
+
+      right_row += 1;
+      if (right_col > 0) {
+          right_col -= 1;
+      }
+  }
+
+  if (win_line(left_line, n_to_win)) {
+      // printf("win diag left down\n");
+      win = true;
+  }
+  if (win_line(right_line, n_to_win)) {
+      // printf("win diag right down\n");
+      win = true;
+  }
+
+  if (win) {
+    array_free(&left_line, NULL);
+    array_free(&right_line, NULL);
+    return true;
+  }
+
   return false;
 }
