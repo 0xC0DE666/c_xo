@@ -7,9 +7,9 @@
 // BOARD
 // ####################
 
-static const char BLANK = ' ';
-
 // SQUARE
+
+static const char BLANK = ' ';
 
 typedef struct {
   Position position;
