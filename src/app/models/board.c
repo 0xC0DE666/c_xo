@@ -65,15 +65,17 @@ void board_free(Matrix** board) {
 
 // WIN
 bool win_line(Array* line, int n_to_win) {
-  for (int i = 0; i < line->size - 1; ++i) {
-    Square* a = (Square*) array_get(line, i);
-    Square* b = (Square*) array_get(line, i + 1);
+  for (int a = 0; a < line->capacity; ++a) {
+    for (int i = a; i < n_to_win - 1; ++i) {
+      Square* a = (Square*) array_get(line, i);
+      Square* b = (Square*) array_get(line, i + 1);
 
-    bool blank_sqr = a->mark == BLANK || b->mark == BLANK;
-    bool marks_differ = a->mark != b->mark;
+      bool blank_sqr = a->mark == BLANK || b->mark == BLANK;
+      bool marks_differ = a->mark != b->mark;
 
-    if (blank_sqr || marks_differ) {
-        return false;
+      if (blank_sqr || marks_differ) {
+          return false;
+      }
     }
   }
 
