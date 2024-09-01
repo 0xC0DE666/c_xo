@@ -21,9 +21,9 @@ void square_free(Square** square);
 char* square_to_string(Square* square);
 
 // BOARD
-Matrix* board_new(unsigned rows, unsigned columns);
+Matrix* board_new(int rows, int columns);
 void board_free(Matrix** board);
 
 // WIN
-bool win_line(Array* line, unsigned n_to_win);
-bool win(Matrix* board, unsigned n_to_win);
+bool win_line(Array* line, int n_to_win);
+bool win(Matrix* board, int n_to_win);

@@ -44,11 +44,11 @@ char* square_to_string(Square* square) {
 
 
 // BOARD
-Matrix* board_new(unsigned rows, unsigned columns) {
+Matrix* board_new(int rows, int columns) {
   Matrix* board = matrix_new(rows, columns);
 
-  for (unsigned r = 0; r < board->rows; r++) {
-    for (unsigned c = 0; c < board->columns; c++) {
+  for (int r = 0; r < board->rows; r++) {
+    for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
       Square* sqr = square_new(pos, BLANK);
       matrix_insert(board, &pos, sqr);
@@ -64,8 +64,8 @@ void board_free(Matrix** board) {
 
 
 // WIN
-bool win_line(Array* line, unsigned n_to_win) {
-  for (unsigned i = 0; i < line->size - 1; ++i) {
+bool win_line(Array* line, int n_to_win) {
+  for (int i = 0; i < line->size - 1; ++i) {
     Square* a = (Square*) array_get(line, i);
     Square* b = (Square*) array_get(line, i + 1);
 
@@ -80,7 +80,7 @@ bool win_line(Array* line, unsigned n_to_win) {
   return true;
 }
 
-bool win_straight(Matrix* board, unsigned n_to_win) {
+bool win_straight(Matrix* board, int n_to_win) {
   // check straight lines
   Array* row = array_new(board->rows);
   Array* col = array_new(board->columns);
@@ -118,18 +118,18 @@ bool win_straight(Matrix* board, unsigned n_to_win) {
   return win;
 }
 
-bool win_diagonal(Matrix* board, unsigned n_to_win) {
+bool win_diagonal(Matrix* board, int n_to_win) {
   // check diagonal lines
-  unsigned left_row = 0;
-  unsigned left_col = 0;
+  int left_row = 0;
+  int left_col = 0;
 
-  unsigned right_row = 0;
-  unsigned right_col = board->columns - 1;
+  int right_row = 0;
+  int right_col = board->columns - 1;
 
   Array* left_line = array_new(board->rows);
   Array* right_line = array_new(board->rows);
 
-  for (unsigned i = 0; i < board->rows; ++i) {
+  for (int i = 0; i < board->rows; ++i) {
       Position left_pos = position_new(left_row, left_col);
       Square* left_sqr = matrix_get(board, &left_pos);
 
@@ -164,7 +164,7 @@ bool win_diagonal(Matrix* board, unsigned n_to_win) {
   return win;
 }
 
-bool win(Matrix* board, unsigned n_to_win) {
+bool win(Matrix* board, int n_to_win) {
   if (board->size < n_to_win) {
     return false;
   }
