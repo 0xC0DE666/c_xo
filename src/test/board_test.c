@@ -55,8 +55,8 @@ Test(square_to_string, _1) {
 Test(board_new, _1) {
   Matrix* board = board_new(3, 3);
 
-  for (unsigned r = 0; r < board->rows; r++) {
-    for (unsigned c = 0; c < board->columns; c++) {
+  for (int r = 0; r < board->rows; r++) {
+    for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
       Square* sqr = matrix_get(board, &pos);
       cr_assert_eq(sqr != NULL, true);
@@ -90,7 +90,7 @@ Test(board_free, _1) {
 Test(win_line, false_blank_sqr) {
   Array* line = array_new(3);
 
-  for (unsigned i = 0; i < line->capacity; i++) {
+  for (int i = 0; i < line->capacity; i++) {
     Square* sqr = square_new(position_new(0, i), i == 0 ? BLANK : 'X');
     array_append(line, sqr);
   }
@@ -105,7 +105,7 @@ Test(win_line, false_blank_sqr) {
 Test(win_line, false_marks_differ) {
   Array* line = array_new(3);
 
-  for (unsigned i = 0; i < line->capacity; i++) {
+  for (int i = 0; i < line->capacity; i++) {
     Square* sqr = square_new(position_new(0, i), i == 0 ? 'O' : 'X');
     array_append(line, sqr);
   }
@@ -120,7 +120,7 @@ Test(win_line, false_marks_differ) {
 Test(win_line, true_win) {
   Array* line = array_new(3);
 
-  for (unsigned i = 0; i < line->capacity; i++) {
+  for (int i = 0; i < line->capacity; i++) {
     Square* sqr = square_new(position_new(0, i), 'X');
     array_append(line, sqr);
   }
@@ -140,12 +140,12 @@ Test(win, win_straight_lines) {
 
   // char* str_board = matrix_to_string(board, (ToStringFn) square_to_string);
   
-  unsigned n_to_win = 3;
-  for (unsigned r = 0; r < board->rows; r++) {
+  int n_to_win = 3;
+  for (int r = 0; r < board->rows; r++) {
     ///////////////
     // test rows
     ///////////////
-    for (unsigned c = 0; c < board->columns; c++) {
+    for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
       Square* sqr = (Square*) matrix_get(board, &pos);
       sqr->mark = 'X';
@@ -157,7 +157,7 @@ Test(win, win_straight_lines) {
     bool result = win(board, n_to_win);
     cr_assert_eq(result, true);
 
-    for (unsigned c = 0; c < board->columns; c++) {
+    for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
       Square* sqr = (Square*) matrix_get(board, &pos);
       sqr->mark = BLANK;
@@ -167,7 +167,7 @@ Test(win, win_straight_lines) {
     ///////////////
     // test columns
     ///////////////
-    for (unsigned c = 0; c < board->columns; c++) {
+    for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(c, r);
       Square* sqr = (Square*) matrix_get(board, &pos);
       sqr->mark = 'X';
@@ -179,7 +179,7 @@ Test(win, win_straight_lines) {
     result = win(board, n_to_win);
     cr_assert_eq(result, true);
 
-    for (unsigned c = 0; c < board->columns; c++) {
+    for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(c, r);
       Square* sqr = (Square*) matrix_get(board, &pos);
       sqr->mark = BLANK;
@@ -195,20 +195,20 @@ Test(win, win_diagonal_lines) {
   Matrix* board = board_new(3, 3);
 
   // test left diagonal
-  for (unsigned c = 0; c < board->columns; c++) {
+  for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, c);
     Square* sqr = (Square*) matrix_get(board, &pos);
     sqr->mark = 'X';
   }
   // printf("%s\n", matrix_to_string(board, (ToStringFn) square_to_string));
 
-  unsigned n_to_win = 3;
+  int n_to_win = 3;
   bool result = win(board, n_to_win);
 
   cr_assert_eq(result, true);
 
   // reset values
-  for (unsigned c = 0; c < board->columns; c++) {
+  for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, c);
     Square* sqr = (Square*) matrix_get(board, &pos);
     sqr->mark = BLANK;
@@ -216,8 +216,8 @@ Test(win, win_diagonal_lines) {
 
 
   // test right diagonal
-  unsigned col = board->columns - 1;
-  for (unsigned c = 0; c < board->columns; c++) {
+  int col = board->columns - 1;
+  for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, col--);
     Square* sqr = (Square*) matrix_get(board, &pos);
     sqr->mark = 'X';
