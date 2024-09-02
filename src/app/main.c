@@ -25,6 +25,7 @@ int main() {
     char* str_board = matrix_to_string(board, (ToStringFn) square_to_string);
 
     printf("%s  vs  %s\n%s", str_p1, str_p2, str_board);
+    printf("Choose a square to mark:\n");
 
     free(str_p1);
     free(str_p2);
