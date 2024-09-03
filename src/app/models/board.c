@@ -62,6 +62,36 @@ void board_free(Matrix** board) {
   matrix_free(board, (FreeFn) square_free);
 }
 
+void board_print(Matrix* board) {
+  int i = 1;
+  for (int r = 0; r < board->rows; ++r) {
+    printf("\t   ");
+    for (int c = 0; c < board->columns; ++c) {
+      Position pos = position_new(r, c);
+      Square* sqr = matrix_get(board, &pos);
+      int mark = sqr->mark == BLANK ? i++ + '0' : sqr->mark;
+      printf(" %c ", mark);
+      if (c < board->columns - 1) {
+        printf("|");
+      }
+      if (c == board->columns- 1) {
+        printf("\n");
+      }
+    }
+    if (r == board->rows - 1) {
+      continue;
+    }
+
+    printf("\t   ");
+    for (int l = 0; l < board->rows * 4 - 1; ++l) {
+      printf("-");
+      if (l == board->columns * 4 - 2) {
+        printf("\n");
+      }
+    }
+  }
+}
+
 
 // WIN
 bool win_line(Array* line, int n_to_win) {

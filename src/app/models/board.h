@@ -23,6 +23,7 @@ char* square_to_string(Square* square);
 // BOARD
 Matrix* board_new(int rows, int columns);
 void board_free(Matrix** board);
+void board_print(Matrix* board);
 
 // WIN
 bool win_line(Array* line, int n_to_win);

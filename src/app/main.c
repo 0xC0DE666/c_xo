@@ -19,17 +19,20 @@ int main() {
   bool win = false;
   bool board_has_capacity = true;
 
+  Position pos = position_new(1, 1);
+  Square* sqr = matrix_get(board, &pos);
+  sqr->mark = 'X';
+
   while (board_has_capacity && win == false) {
     char* str_p1 = player_to_string(p1);
     char* str_p2 = player_to_string(p2);
-    char* str_board = matrix_to_string(board, (ToStringFn) square_to_string);
 
-    printf("%s  vs  %s\n%s", str_p1, str_p2, str_board);
-    printf("Choose a square to mark:\n");
+    printf("%s  vs  %s\n\n", str_p1, str_p2);
+    board_print(board);
+    printf("\nChoose a square to mark:\n");
 
     free(str_p1);
     free(str_p2);
-    free(str_board);
 
     win = true;
   }
