@@ -20,8 +20,7 @@ int main() {
   bool board_has_capacity = true;
 
   Position pos = position_new(1, 1);
-  Square* sqr = matrix_get(board, &pos);
-  sqr->mark = 'X';
+  board_mark(board, &pos, 'X');
 
   while (board_has_capacity && win == false) {
     char* str_p1 = player_to_string(p1);

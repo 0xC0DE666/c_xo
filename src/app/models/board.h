@@ -24,6 +24,7 @@ char* square_to_string(Square* square);
 Matrix* board_new(int rows, int columns);
 void board_free(Matrix** board);
 void board_print(Matrix* board);
+int board_mark(Matrix* board, Position* position, char mark);
 
 // WIN
 bool win_line(Array* line, int n_to_win);

@@ -92,6 +92,20 @@ void board_print(Matrix* board) {
   }
 }
 
+int board_mark(Matrix* board, Position* position, char mark) {
+  if (matrix_position_valid(board, position) == false) {
+    return 1;
+  }
+  
+  Square* sqr = matrix_get(board, position);
+  if (sqr->mark != BLANK) {
+    return 1;
+  }
+
+  sqr->mark = mark;
+  return 0;
+}
+
 
 // WIN
 bool win_line(Array* line, int n_to_win) {

@@ -49,6 +49,7 @@ Test(square_to_string, _1) {
   string_free(&result);
 }
 
+
 // ####################
 // board_new
 // ####################
@@ -69,7 +70,6 @@ Test(board_new, _1) {
   board_free(&board);
 }
 
-
 // ####################
 // board_free
 // ####################
@@ -81,6 +81,31 @@ Test(board_free, _1) {
   board_free(&board);
 
   cr_assert_eq(board, NULL);
+}
+
+// ####################
+// board_mark
+// ####################
+Test(board_mark, _1) {
+  Matrix* board = board_new(3, 3);
+  Position pos = position_new(-1, 1);
+
+  //fail: position invalid
+  int res = board_mark(board, &pos, 'X');
+  cr_assert_eq(res, 1);
+
+  // success
+  pos.row = 1;
+  res = board_mark(board, &pos, 'X');
+  cr_assert_eq(res, 0);
+  Square* sqr = matrix_get(board, &pos);
+  cr_assert_eq(sqr->mark, 'X');
+
+  //fail: already marked
+  res = board_mark(board, &pos, 'X');
+  cr_assert_eq(res, 1);
+
+  board_free(&board);
 }
 
 
