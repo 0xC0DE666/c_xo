@@ -63,17 +63,24 @@ void board_free(Matrix** board) {
 }
 
 void board_print(Matrix* board) {
-  int i = 1;
+  int i = 0;
   for (int r = 0; r < board->rows; ++r) {
     printf("\t   ");
     for (int c = 0; c < board->columns; ++c) {
+      ++i;
       Position pos = position_new(r, c);
       Square* sqr = matrix_get(board, &pos);
-      int mark = sqr->mark == BLANK ? i++ + '0' : sqr->mark;
-      printf(" %c ", mark);
+
+      if (sqr->mark == BLANK) {
+        printf(" %d ", i);
+      } else {
+        printf(" %c ", sqr->mark);
+      }
+
       if (c < board->columns - 1) {
         printf("|");
       }
+
       if (c == board->columns- 1) {
         printf("\n");
       }
