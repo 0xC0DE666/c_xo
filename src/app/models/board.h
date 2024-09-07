@@ -19,6 +19,7 @@ typedef struct {
 Square* square_new(Position position, char mark);
 void square_free(Square** square);
 char* square_to_string(Square* square);
+bool* square_is_blank(Square* square);
 
 // BOARD
 Matrix* board_new(int rows, int columns);

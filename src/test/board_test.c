@@ -5,6 +5,7 @@
 #include <criterion/redirect.h>
 
 #include "../app/utils/io.h"
+#include "../app/utils/misc.h"
 #include "../app/models/board.h"
 
 // ####################
@@ -40,13 +41,31 @@ Test(square_free, _1) {
 Test(square_to_string, _1) {
   Square* square = square_new(position_new(1, 1), 'X');
 
-  char* result= square_to_string(square);
+  char* result = square_to_string(square);
   char* expected = "(1, 1, X)";
 
   cr_assert_eq(strcmp(result, expected), 0);
 
   square_free(&square);
   string_free(&result);
+}
+
+// ####################
+// square_is_blank
+// ####################
+Test(square_is_blank, _1) {
+  Square* sqr = square_new(position_new(0, 0), BLANK);
+  bool* b = square_is_blank(sqr);
+
+  cr_assert_eq(*b, true);
+
+  sqr->mark = 'O';
+  b = square_is_blank(sqr);
+
+  cr_assert_eq(*b, false);
+
+  square_free(&sqr);
+  ptr_free((void**) &b);
 }
 
 

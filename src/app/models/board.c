@@ -42,6 +42,12 @@ char* square_to_string(Square* square) {
   return str;
 }
 
+bool* square_is_blank(Square* square) {
+  bool* b = malloc(sizeof(bool));
+  *b = square->mark == BLANK;
+  return b;
+}
+
 
 // BOARD
 Matrix* board_new(int rows, int columns) {
@@ -112,7 +118,6 @@ int board_mark(Matrix* board, Position* position, char mark) {
   sqr->mark = mark;
   return 0;
 }
-
 
 // WIN
 bool win_line(Array* line, int n_to_win) {
