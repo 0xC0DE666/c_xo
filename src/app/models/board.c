@@ -42,10 +42,13 @@ char* square_to_string(Square* square) {
   return str;
 }
 
-bool* square_is_blank(Square* square) {
-  bool* b = malloc(sizeof(bool));
-  *b = square->mark == BLANK;
-  return b;
+bool square_is_blank(Matrix* board, Position* position) {
+  if (matrix_position_valid(board, position) == false) {
+    return false;
+  }
+  
+  Square* sqr = matrix_get(board, position);
+  return sqr->mark == BLANK;
 }
 
 
@@ -110,7 +113,7 @@ int board_mark(Matrix* board, Position* position, char mark) {
     return 1;
   }
   
-  Square* sqr = matrix_get(board, position);
+  Square* sqr = (Square*) matrix_get(board, position);
   if (sqr->mark != BLANK) {
     return 1;
   }
@@ -118,6 +121,18 @@ int board_mark(Matrix* board, Position* position, char mark) {
   sqr->mark = mark;
   return 0;
 }
+
+Position index_to_position(Matrix* board, int index) {
+  for (int r = 0; r < board->rows; ++r) {
+    for (int c = 0; c < board->columns; ++c) {
+      --index;
+      if (index == 0) {
+        return position_new(r, c);
+      }
+    }
+  }
+}
+
 
 // WIN
 bool win_line(Array* line, int n_to_win) {

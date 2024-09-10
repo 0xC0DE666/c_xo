@@ -54,18 +54,27 @@ Test(square_to_string, _1) {
 // square_is_blank
 // ####################
 Test(square_is_blank, _1) {
-  Square* sqr = square_new(position_new(0, 0), BLANK);
-  bool* b = square_is_blank(sqr);
+  Matrix* board = board_new(3, 3);
+  Position pos;
 
-  cr_assert_eq(*b, true);
+  for (int i = 0; i < board->columns; ++i) {
+    pos = position_new(i, i);
+    board_mark(board, &pos, 'X');
+  }
 
-  sqr->mark = 'O';
-  b = square_is_blank(sqr);
+  for (int r = 0; r < board->rows; ++r) {
+    for (int c = 0; c < board->columns; ++c) {
+      pos = position_new(r, c);
 
-  cr_assert_eq(*b, false);
+      if (r == c) {
+        cr_assert_eq(square_is_blank(board, &pos), false);
+      } else {
+        cr_assert_eq(square_is_blank(board, &pos), true);
+      }
+    }
+  }
 
-  square_free(&sqr);
-  ptr_free((void**) &b);
+  board_free(&board);
 }
 
 
@@ -123,6 +132,25 @@ Test(board_mark, _1) {
   //fail: already marked
   res = board_mark(board, &pos, 'X');
   cr_assert_eq(res, 1);
+
+  board_free(&board);
+}
+
+// ####################
+// index_to_position
+// ####################
+Test(index_to_position, _1) {
+  Matrix* board = board_new(3, 3);
+
+  int i = 1;
+  for (int r = 0; r < board->rows; ++r) {
+    for (int c = 0; c < board->columns; ++c) {
+      Position pos = index_to_position(board, i);
+      cr_assert_eq(pos.row, r);
+      cr_assert_eq(pos.column, c);
+      ++i;
+    }
+  }
 
   board_free(&board);
 }
