@@ -27,26 +27,22 @@ int main() {
   board_mark(board, &pos, 'X');
 
   while (board_has_capacity && win == false) {
-    Matrix* blanks = matrix_map(board, (MatrixMapFn) square_is_blank);
-    char* str_blanks = matrix_to_string(blanks, (ToStringFn) bool_to_str);
-
     printf("%s  vs  %s\n\n", str_p1, str_p2);
     board_print(board);
     printf("\nChoose a square to mark:\n");
-    printf("%s\n", str_blanks);
+
+    int idx = get_index_to_mark(1, board->capacity);
 
     win = true;
-
-    free(str_blanks);
-    matrix_free(&blanks, (FreeFn) ptr_free);
+    // system("clear");
   }
 
 
   player_free(&p1);
   player_free(&p2);
-  free(str_p1);
-  free(str_p2);
-
+  ptr_free((void**) &str_p1);
+  ptr_free((void**) &str_p2);
   matrix_free(&board, (FreeFn) square_free);
+
   return 0;
 }
