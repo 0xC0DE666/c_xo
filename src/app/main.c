@@ -26,7 +26,8 @@ int main() {
   int n_to_win = 3;
 
   while (move_count < board->capacity && winner == false) {
-    ++move_count;
+    // repeat
+    system("clear");
     printf("%s  vs  %s\n\n", str_p1, str_p2);
     board_print(board);
     printf("\nChoose a square to mark:\n");
@@ -40,19 +41,34 @@ int main() {
     }
 
     char sym = p1->symbol;
-    bool p2s_turn = round_count % 2 == 0 && move_count % 2 != 0;
+    bool p2s_turn =  false;
+
+    if (round_count % 2 == 0) {
+      p2s_turn = move_count % 2 != 0; 
+    } else {
+      p2s_turn = move_count % 2 == 0; 
+    }
 
     if (p2s_turn) {
       sym = p2->symbol;
     }
 
-    board_mark(board, &pos, sym);
+    int mark_res = board_mark(board, &pos, sym);
+    if (mark_res == 1) {
+      continue;
+    }
+    ++move_count;
 
-    if (board->size == n_to_win) {
+    if (move_count >= n_to_win) {
       winner = win(board, n_to_win);
     }
 
     if (winner) {
+      // repeat
+      system("clear");
+      printf("%s  vs  %s\n\n", str_p1, str_p2);
+      board_print(board);
+
       char* victor = p2s_turn ? p2->name : p1->name;
       printf("%s won!\n", victor);
       ++round_count;
@@ -60,11 +76,15 @@ int main() {
     }
 
     if (move_count == board->capacity) {
+      // repeat
+      system("clear");
+      printf("%s  vs  %s\n\n", str_p1, str_p2);
+      board_print(board);
+
       printf("Draw!\n");
       break;
     }
 
-    system("clear");
   }
 
   player_free(&p1);
