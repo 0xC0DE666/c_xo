@@ -36,3 +36,5 @@ char* player_to_string(Player* player) {
 
   return str;
 }
+
+void cpu_get_pos_to_mark(Matrix* board) {}
