@@ -12,7 +12,7 @@
 
 int main() {
   printf("C XO\n");
-  printf("I use Arch, btw. :0");
+  printf("I use Arch, btw... :0");
 
   Player* p1 = player_new("Player 1", 'X');
   Player* p2 = player_new("Player 2", 'O');
