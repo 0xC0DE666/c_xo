@@ -112,6 +112,37 @@ Test(board_free, _1) {
 }
 
 // ####################
+// board_clear
+// ####################
+void mark_x(Square* sqr) {
+  sqr->mark = 'X'; 
+}
+
+bool marked(Square* sqr) {
+  return sqr->mark != BLANK;
+}
+
+void test_marked(Square* sqr) {
+  cr_assert_eq(marked(sqr), true);
+}
+
+void test_unmarked(Square* sqr) {
+  cr_assert_eq(marked(sqr), false);
+}
+
+Test(board_clear, _1) {
+  Matrix* board = board_new(3, 3);
+  matrix_for_each(board, (MatrixEachFn) mark_x);
+  matrix_for_each(board, (MatrixEachFn) test_marked);
+
+  board_clear(board);
+
+  matrix_for_each(board, (MatrixEachFn) test_unmarked);
+
+  board_free(&board);
+}
+
+// ####################
 // board_mark
 // ####################
 Test(board_mark, _1) {

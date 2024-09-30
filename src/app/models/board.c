@@ -51,6 +51,10 @@ bool square_is_blank(Matrix* board, Position* position) {
   return sqr->mark == BLANK;
 }
 
+void square_clear(Square* square) {
+  square->mark = BLANK;
+}
+
 
 // BOARD
 Matrix* board_new(int rows, int columns) {
@@ -69,6 +73,10 @@ Matrix* board_new(int rows, int columns) {
 
 void board_free(Matrix** board) {
   matrix_free(board, (FreeFn) square_free);
+}
+
+void board_clear(Matrix* board) {
+  matrix_for_each(board, (MatrixEachFn) square_clear);
 }
 
 void board_print(Matrix* board) {
