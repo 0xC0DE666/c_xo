@@ -9,5 +9,6 @@ typedef struct {
 Player* player_new(char* name, char symbol);
 void player_free(Player** player);
 char* player_to_string(Player* player);
+void player_print(Player* player);
 
 void cpu_get_pos_to_mark(Matrix* board);

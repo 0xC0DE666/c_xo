@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 
 #include "../libs/c_structs.h"
@@ -10,26 +11,30 @@
 #include "models/player.h"
 #include "models/board.h"
 
+void scoreboard_print(Player* p1, Player* p2) {
+  player_print(p1);
+  printf("  vs  ");
+  player_print(p2);
+  printf("\n\n");
+}
+
 int main() {
   printf("C XO\n");
-  ask_play_again();
 
   Player* p1 = player_new("Player 1", 'X');
   Player* p2 = player_new("Player 2", 'O');
-  char* str_p1 = player_to_string(p1);
-  char* str_p2 = player_to_string(p2);
- 
   Matrix* board = board_new(3, 3);
   
   int round_count = 1;
   int move_count = 0;
-  bool winner = false;
   int n_to_win = 3;
 
-  while (move_count < board->capacity && winner == false) {
+  bool end_game = false;
+
+  while (!end_game) {
     // repeat
     system("clear");
-    printf("%s  vs  %s\n\n", str_p1, str_p2);
+    scoreboard_print(p1, p2);
     board_print(board);
     printf("\nChoose a square to mark:\n");
 
@@ -60,38 +65,54 @@ int main() {
     }
     ++move_count;
 
+    bool winner = false;
+    bool draw = move_count == board->capacity;
     if (move_count >= n_to_win) {
       winner = win(board, n_to_win);
     }
 
+    end_game = winner || draw;
+    if (!end_game) {
+      continue;
+    }
+
+    Player* player = p2s_turn ? p2 : p1;
     if (winner) {
-      // repeat
-      system("clear");
-      printf("%s  vs  %s\n\n", str_p1, str_p2);
-      board_print(board);
-
-      char* victor = p2s_turn ? p2->name : p1->name;
-      printf("%s won!\n", victor);
-      ++round_count;
-      break;
+      player->score++;
     }
 
-    if (move_count == board->capacity) {
-      // repeat
-      system("clear");
-      printf("%s  vs  %s\n\n", str_p1, str_p2);
-      board_print(board);
+    system("clear");
+    scoreboard_print(p1, p2);
+    board_print(board);
 
+    if (winner) {
+      printf("%s won!\n", player->name);
+      sleep(2);
+    }
+
+    if (draw) {
       printf("Draw!\n");
-      break;
+      sleep(2);
     }
 
+    bool play_again = ask_play_again();
+    if (play_again) {
+      ++round_count;
+      move_count = 0;
+      board_clear(board);
+      end_game = false;
+    }
+
+    if (!play_again) {
+      system("clear");
+      scoreboard_print(p1, p2);
+      board_print(board);
+      printf("Game over.\n");
+    }
   }
 
   player_free(&p1);
   player_free(&p2);
-  ptr_free((void**) &str_p1);
-  ptr_free((void**) &str_p2);
   matrix_free(&board, (FreeFn) square_free);
 
   return 0;

@@ -37,4 +37,13 @@ char* player_to_string(Player* player) {
   return str;
 }
 
+void player_print(Player* player) {
+  printf(
+    "%s (%c) %d",
+    player->name,
+    player->symbol,
+    player->score
+  ); 
+}
+
 void cpu_get_pos_to_mark(Matrix* board) {}

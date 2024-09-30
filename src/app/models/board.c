@@ -98,7 +98,7 @@ void board_print(Matrix* board) {
         printf("|");
       }
 
-      if (c == board->columns- 1) {
+      if (c == board->columns - 1) {
         printf("\n");
       }
     }

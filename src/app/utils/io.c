@@ -66,7 +66,7 @@ bool ask_play_again() {
     bool n = strcmp(input, no) == 0;
 
     if (y || n) {
-      return strcmp(input, yes) ? true : false;
+      return strcmp(input, yes) == 0 ? true : false;
     }
     printf("Please enter yes or no.\n");
   }
