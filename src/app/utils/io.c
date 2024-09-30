@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <limits.h>
+#include <string.h>
 
 #include "./misc.h"
 
@@ -49,4 +51,23 @@ int get_index_to_mark(int min, int max) {
   }
 
   return idx;
+}
+
+bool ask_play_again() {
+  char input[10] = {0};
+  char yes[] = "yes\n";
+  char no[] = "no\n";
+
+  while (true) {
+    printf("Wanna play again? [yes/no]\n");
+    fgets(input, 10, stdin);
+
+    bool y = strcmp(input, yes) == 0;
+    bool n = strcmp(input, no) == 0;
+
+    if (y || n) {
+      return strcmp(input, yes) ? true : false;
+    }
+    printf("Please enter yes or no.\n");
+  }
 }

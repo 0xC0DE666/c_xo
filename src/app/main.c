@@ -12,7 +12,7 @@
 
 int main() {
   printf("C XO\n");
-  printf("I use Arch, btw... :0");
+  ask_play_again();
 
   Player* p1 = player_new("Player 1", 'X');
   Player* p2 = player_new("Player 2", 'O');
@@ -44,7 +44,7 @@ int main() {
     char sym = p1->symbol;
     bool p2s_turn =  false;
 
-    if (round_count % 2 == 0) {
+    if (round_count % 2 != 0) {
       p2s_turn = move_count % 2 != 0; 
     } else {
       p2s_turn = move_count % 2 == 0; 

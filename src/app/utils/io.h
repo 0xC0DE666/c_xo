@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 // ********************
 // IO
 // ********************
@@ -10,3 +12,4 @@ int read_line(char buffer[], int capacity);
 int read_int();
 
 int get_index_to_mark(int min, int max);
+bool ask_play_again();
