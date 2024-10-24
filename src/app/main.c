@@ -6,8 +6,7 @@
 
 #include "../libs/c_structs.h"
 
-#include "utils/io.h"
-#include "utils/misc.h"
+#include "utils/utils.h"
 #include "models/models.h"
 
 void scoreboard_print(Player* p1, Player* p2) {

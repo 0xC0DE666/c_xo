@@ -1,5 +1,8 @@
 #include <stdbool.h>
 
+#ifndef UTILS_H
+#define UTILS_H
+
 // ********************
 // IO
 // ********************
@@ -13,3 +16,12 @@ int read_int();
 
 int get_index_to_mark(int min, int max);
 bool ask_play_again();
+
+// ********************
+// MISC
+// ********************
+  void ptr_free(void** ptr);
+
+  char* bool_to_str(bool* b);
+
+#endif

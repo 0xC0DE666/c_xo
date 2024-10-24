@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <string.h>
 
-#include "./misc.h"
+#include "./utils.h"
 
 char* string_new(int length) {
   char* string = malloc(length * sizeof(char));

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../utils/io.h"
+#include "../utils/utils.h"
 #include "models.h"
 
 // SQUARE

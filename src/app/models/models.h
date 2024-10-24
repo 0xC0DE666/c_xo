@@ -3,6 +3,9 @@
 
 #include "../../libs/c_structs.h"
 
+#ifndef MODELS_H
+#define MODELS_H
+
 // ####################
 // BOARD
 // ####################
@@ -50,3 +53,5 @@ char* player_to_string(Player* player);
 void player_print(Player* player);
 
 void cpu_get_pos_to_mark(Matrix* board);
+
+#endif

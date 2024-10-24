@@ -3,7 +3,7 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
-#include "../app/utils/io.h"
+#include "../app/utils/utils.h"
 
 // ####################
 // string_new

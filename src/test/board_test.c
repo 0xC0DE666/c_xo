@@ -4,8 +4,7 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
-#include "../app/utils/io.h"
-#include "../app/utils/misc.h"
+#include "../app/utils/utils.h"
 #include "../app/models/models.h"
 
 // ####################
