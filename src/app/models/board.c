@@ -47,7 +47,7 @@ bool square_is_blank(Matrix* board, Position* position) {
     return false;
   }
   
-  Square* sqr = matrix_get(board, position);
+  Square* sqr = matrix_get(board, position).ok;
   return sqr->mark == BLANK;
 }
 
@@ -58,13 +58,13 @@ void square_clear(Square* square) {
 
 // BOARD
 Matrix* board_new(int rows, int columns) {
-  Matrix* board = matrix_new(rows, columns);
+  Matrix* board = matrix_new(rows, columns).ok;
 
   for (int r = 0; r < board->rows; r++) {
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
       Square* sqr = square_new(pos, BLANK);
-      matrix_insert(board, &pos, sqr);
+      matrix_set(board, &pos, sqr);
     }
   }
 
@@ -86,7 +86,7 @@ void board_print(Matrix* board) {
     for (int c = 0; c < board->columns; ++c) {
       ++i;
       Position pos = position_new(r, c);
-      Square* sqr = matrix_get(board, &pos);
+      Square* sqr = matrix_get(board, &pos).ok;
 
       if (sqr->mark == BLANK) {
         printf(" %d ", i);
@@ -121,7 +121,7 @@ int board_mark(Matrix* board, Position* position, char mark) {
     return 1;
   }
   
-  Square* sqr = (Square*) matrix_get(board, position);
+  Square* sqr = (Square*) matrix_get(board, position).ok;
   if (sqr->mark != BLANK) {
     return 1;
   }
@@ -146,8 +146,8 @@ Position index_to_position(Matrix* board, int index) {
 bool win_line(Array* line, int n_to_win) {
   for (int a = 0; a < line->capacity; ++a) {
     for (int i = a; i < n_to_win - 1; ++i) {
-      Square* a = (Square*) array_get(line, i);
-      Square* b = (Square*) array_get(line, i + 1);
+      Square* a = (Square*) array_get(line, i).ok;
+      Square* b = (Square*) array_get(line, i + 1).ok;
 
       bool blank_sqr = a->mark == BLANK || b->mark == BLANK;
       bool marks_differ = a->mark != b->mark;
@@ -163,18 +163,18 @@ bool win_line(Array* line, int n_to_win) {
 
 bool win_straight(Matrix* board, int n_to_win) {
   // check straight lines
-  Array* row = array_new(board->rows);
-  Array* col = array_new(board->columns);
+  Array* row = array_new(board->rows).ok;
+  Array* col = array_new(board->columns).ok;
   bool win = false;
 
   for (int r = 0; r < board->rows; ++r) {
     for (int c = 0; c < board->columns; ++c) {
       Position pos = position_new(r, c);
-      Square* sqr = (Square*) matrix_get(board, &pos);
+      Square* sqr = matrix_get(board, &pos).ok;
       array_append(row, sqr);
 
       pos = position_new(c, r);
-      sqr = (Square*) matrix_get(board, &pos);
+      sqr = matrix_get(board, &pos).ok;
       array_append(col, sqr);
     }
     // printf("win? %s\n", array_to_string(row, (ToStringFn) square_to_string));
@@ -207,15 +207,15 @@ bool win_diagonal(Matrix* board, int n_to_win) {
   int right_row = 0;
   int right_col = board->columns - 1;
 
-  Array* left_line = array_new(board->rows);
-  Array* right_line = array_new(board->rows);
+  Array* left_line = array_new(board->rows).ok;
+  Array* right_line = array_new(board->rows).ok;
 
   for (int i = 0; i < board->rows; ++i) {
       Position left_pos = position_new(left_row, left_col);
-      Square* left_sqr = matrix_get(board, &left_pos);
+      Square* left_sqr = matrix_get(board, &left_pos).ok;
 
       Position right_pos = position_new(right_row, right_col);
-      Square* right_sqr = matrix_get(board, &right_pos);
+      Square* right_sqr = matrix_get(board, &right_pos).ok;
 
       array_append(left_line, left_sqr);
       array_append(right_line, right_sqr);

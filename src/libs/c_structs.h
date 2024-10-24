@@ -1,84 +1,154 @@
 #include <stdbool.h>
+#include <pthread.h>
 
 #ifndef C_STRUCTS_H
 #define C_STRUCTS_H
 
-  //####################
-  // SHARED
-  //####################
-  typedef char* (*ToStringFn)(void* const);
-  typedef void (*FreeFn)(void** const);
+//####################
+// COMMON
+//####################
+typedef struct Error {
+  int code;
+  char* message;
+} Error;
 
 
-  //####################
-  // ARRAY
-  //####################
-  typedef struct Array {
-    int capacity;
-    int size;
-    void** elements;
-  } Array;
+Error* error(int code, char* message);
+void error_free(Error** error);
 
-  Array* array_new(int capacity);
-  int array_clear(Array* const array, FreeFn const free_element);
-  int array_free(Array** const array, FreeFn const free_element);
+typedef struct Result {
+  void* ok;
+  Error* error;
+} Result;
 
-  int array_append(Array* const array, void* const element);
-  int array_prepend(Array* const array, void* const element);
-  int array_insert(Array* const array, int index, void* const element);
+Result success(void* value);
+Result fail(int code, char* message);
 
-  void* array_get(Array* const array, int index);
-  void* array_remove(Array* const array, int index);
+#define ERR_MALLOC_FAILED "malloc failed"
 
-  typedef void (*ArrayEachFn)(void* const);
-  void array_for_each(Array* const array, ArrayEachFn const fn);
+#define ERR_RWLOCK_INIT_FAILED "rwlock init failed"
+#define ERR_RWLOCK_DESTROY_FAILED "rwlock destroy failed"
+#define ERR_RDLOCK_FAILED "rdlock failed"
+#define ERR_WRLOCK_FAILED "wrlock failed"
+#define ERR_RWLOCK_UNLOCK_FAILED "rwlock unlock failed"
 
-  typedef void* (*ArrayMapFn)(void* const);
-  Array* array_map(Array* const array, ArrayMapFn const fn);
+#define ERR_AT_CAPACITY "at capacity"
+#define ERR_INVALID_INDEX "invalid index"
+#define ERR_INVALID_POSITION "invalid position"
 
-  char* array_to_string(Array* const array, ToStringFn const to_string);
-
-  bool array_index_valid(Array* const array, int index);
-  bool array_has_capacity(Array* const array);
+typedef void (*FreeFn)(void** const);
+typedef bool (*PredicateFn)(void* const);
+typedef char* (*ToStringFn)(void* const);
 
 
-  //####################
-  // MATRIX
-  //####################
-  typedef struct Position {
-    int row;
-    int column;
-  } Position;
+//####################
+// ARRAY
+//####################
+typedef struct Array {
+  pthread_rwlock_t lock;
+  int capacity;
+  int size;
+  void* elements[];
+} Array;
 
-  Position position_new(int row, int column);
-  char* position_to_string(Position* position);
+bool array_index_valid(Array* const array, int index);
+bool array_has_capacity(Array* const array);
 
-  typedef struct Matrix {
-    int rows;
-    int columns;
-    int capacity;
-    int size;
-    void** elements;
-  } Matrix;
+Result array_new(int capacity);
+int array_clear(Array* const array, FreeFn const free_element);
+int array_free(Array** const array, FreeFn const free_element);
 
-  Matrix* matrix_new(int rows, int columns);
-  int matrix_clear(Matrix* const matrix, FreeFn const free_element);
-  int matrix_free(Matrix** const matrix, FreeFn const free_element);
+int array_append(Array* const array, void* const element);
+int array_prepend(Array* const array, void* const element);
+int array_set(Array* const array, int index, void* const element);
 
-  int matrix_insert(Matrix* const matrix, Position* const position, void* const element);
+Result array_get(Array* const array, int index);
+Result array_remove(Array* const array, int index);
 
-  void* matrix_get(Matrix* const matrix, Position* const position);
-  void* matrix_remove(Matrix* const matrix, Position* const position);
+typedef void (*ArrayEachFn)(void* const);
+int array_for_each(Array* const array, ArrayEachFn const each);
 
-  typedef void (*MatrixEachFn)(void* const);
-  void matrix_for_each(Matrix* const matrix, MatrixEachFn const fn);
+typedef void* (*ArrayMapFn)(void* const);
+Result array_map(Array* const array, ArrayMapFn const map);
 
-  typedef void* (*MatrixMapFn)(void* const);
-  Matrix* matrix_map(Matrix* const matrix, MatrixMapFn const fn);
+Result array_to_string(Array* const array, ToStringFn const to_string);
 
-  char* matrix_to_string(Matrix* const matrix, ToStringFn const to_string);
 
-  bool matrix_position_valid(Matrix* const matrix, Position* const position);
-  bool matrix_has_capacity(Matrix* const matrix);
+//####################
+// MATRIX
+//####################
+typedef struct Position {
+  int row;
+  int column;
+} Position;
+
+Position position_new(int row, int column);
+char* position_to_string(Position* position);
+
+typedef struct Matrix {
+  pthread_rwlock_t lock;
+  int rows;
+  int columns;
+  int capacity;
+  int size;
+  void* elements[];
+} Matrix;
+
+bool matrix_position_valid(Matrix* const matrix, Position* const position);
+bool matrix_has_capacity(Matrix* const matrix);
+
+Result matrix_new(int rows, int columns);
+int matrix_clear(Matrix* const matrix, FreeFn const free_element);
+int matrix_free(Matrix** const matrix, FreeFn const free_element);
+
+int matrix_set(Matrix* const matrix, Position* const position, void* const element);
+
+Result matrix_get(Matrix* const matrix, Position* const position);
+Result matrix_remove(Matrix* const matrix, Position* const position);
+
+typedef void (*MatrixEachFn)(void* const);
+int matrix_for_each(Matrix* const matrix, MatrixEachFn const each);
+
+typedef void* (*MatrixMapFn)(void* const);
+Result matrix_map(Matrix* const matrix, MatrixMapFn const map);
+
+Result matrix_to_string(Matrix* const matrix, ToStringFn const to_string);
+
+
+//####################
+// LINKED LIST
+//####################
+typedef struct Node {
+  void* value;
+  struct Node* next;
+  struct Node* previous;
+} Node;
+
+Result node_new(void* const value);
+int node_free(Node** const node, FreeFn const free_value);
+
+typedef struct LinkedList {
+  pthread_rwlock_t lock;
+  struct Node* head;
+  struct Node* tail;
+} LinkedList;
+
+int linked_list_size(LinkedList* const list);
+
+Result linked_list_new();
+int linked_list_clear(LinkedList* const list, FreeFn const free_value);
+int linked_list_free(LinkedList** const list, FreeFn const free_value);
+
+int linked_list_append(LinkedList* const list, void* const value);
+int linked_list_prepend(LinkedList* const list, void* const value);
+
+int linked_list_insert_before(LinkedList* const list, Node* const node, void* const value);
+int linked_list_insert_after(LinkedList* const list, Node* const node, void* const value);
+
+Result linked_list_remove_head(LinkedList* const list);
+Result linked_list_remove_tail(LinkedList* const list);
+Result linked_list_remove(LinkedList* const list, Node* node);
+
+Result linked_list_find(LinkedList* const list, PredicateFn const predicate);
 
 #endif

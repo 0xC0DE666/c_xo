@@ -87,7 +87,7 @@ Test(board_new, _1) {
   for (int r = 0; r < board->rows; r++) {
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
-      Square* sqr = matrix_get(board, &pos);
+      Square* sqr = matrix_get(board, &pos).ok;
       cr_assert_eq(sqr != NULL, true);
       cr_assert_eq(sqr->position.row, r);
       cr_assert_eq(sqr->position.column, c);
@@ -157,7 +157,7 @@ Test(board_mark, _1) {
   pos.row = 1;
   res = board_mark(board, &pos, 'X');
   cr_assert_eq(res, 0);
-  Square* sqr = matrix_get(board, &pos);
+  Square* sqr = matrix_get(board, &pos).ok;
   cr_assert_eq(sqr->mark, 'X');
 
   //fail: already marked
@@ -191,7 +191,7 @@ Test(index_to_position, _1) {
 // win_line
 // ####################
 Test(win_line, false_blank_sqr) {
-  Array* line = array_new(3);
+  Array* line = array_new(3).ok;
 
   for (int i = 0; i < line->capacity; i++) {
     Square* sqr = square_new(position_new(0, i), i == 0 ? BLANK : 'X');
@@ -206,7 +206,7 @@ Test(win_line, false_blank_sqr) {
 }
 
 Test(win_line, false_marks_differ) {
-  Array* line = array_new(3);
+  Array* line = array_new(3).ok;
 
   for (int i = 0; i < line->capacity; i++) {
     Square* sqr = square_new(position_new(0, i), i == 0 ? 'O' : 'X');
@@ -221,7 +221,7 @@ Test(win_line, false_marks_differ) {
 }
 
 Test(win_line, true_win) {
-  Array* line = array_new(3);
+  Array* line = array_new(3).ok;
 
   for (int i = 0; i < line->capacity; i++) {
     Square* sqr = square_new(position_new(0, i), 'X');
@@ -250,7 +250,7 @@ Test(win, win_straight_lines) {
     ///////////////
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
-      Square* sqr = (Square*) matrix_get(board, &pos);
+      Square* sqr = (Square*) matrix_get(board, &pos).ok;
       sqr->mark = 'X';
     }
 
@@ -262,7 +262,7 @@ Test(win, win_straight_lines) {
 
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
-      Square* sqr = (Square*) matrix_get(board, &pos);
+      Square* sqr = (Square*) matrix_get(board, &pos).ok;
       sqr->mark = BLANK;
     }
     // printf("\n\n");
@@ -272,7 +272,7 @@ Test(win, win_straight_lines) {
     ///////////////
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(c, r);
-      Square* sqr = (Square*) matrix_get(board, &pos);
+      Square* sqr = (Square*) matrix_get(board, &pos).ok;
       sqr->mark = 'X';
     }
 
@@ -284,7 +284,7 @@ Test(win, win_straight_lines) {
 
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(c, r);
-      Square* sqr = (Square*) matrix_get(board, &pos);
+      Square* sqr = (Square*) matrix_get(board, &pos).ok;
       sqr->mark = BLANK;
     }
     // printf("\n\n");
@@ -300,7 +300,7 @@ Test(win, win_diagonal_lines) {
   // test left diagonal
   for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, c);
-    Square* sqr = (Square*) matrix_get(board, &pos);
+    Square* sqr = (Square*) matrix_get(board, &pos).ok;
     sqr->mark = 'X';
   }
   // printf("%s\n", matrix_to_string(board, (ToStringFn) square_to_string));
@@ -313,7 +313,7 @@ Test(win, win_diagonal_lines) {
   // reset values
   for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, c);
-    Square* sqr = (Square*) matrix_get(board, &pos);
+    Square* sqr = (Square*) matrix_get(board, &pos).ok;
     sqr->mark = BLANK;
   }
 
@@ -322,7 +322,7 @@ Test(win, win_diagonal_lines) {
   int col = board->columns - 1;
   for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, col--);
-    Square* sqr = (Square*) matrix_get(board, &pos);
+    Square* sqr = (Square*) matrix_get(board, &pos).ok;
     sqr->mark = 'X';
   }
   // printf("%s\n", matrix_to_string(board, (ToStringFn) square_to_string));
