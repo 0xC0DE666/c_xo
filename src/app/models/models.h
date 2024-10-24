@@ -7,6 +7,22 @@
 #define MODELS_H
 
 // ####################
+// PLAYER
+// ####################
+typedef struct {
+  char* name;
+  char symbol;
+  int score;
+} Player;
+
+Player* player_new(char* name, char symbol);
+void player_free(Player** player);
+char* player_to_string(Player* player);
+void player_print(Player* player);
+
+void cpu_get_pos_to_mark(Matrix* board);
+
+// ####################
 // BOARD
 // ####################
 
@@ -37,21 +53,5 @@ Position index_to_position(Matrix* const board, int index);
 // WIN
 bool win_line(Array* line, int n_to_win);
 bool win(Matrix* board, int n_to_win);
-
-// ####################
-// PLAYER
-// ####################
-typedef struct {
-  char* name;
-  char symbol;
-  int score;
-} Player;
-
-Player* player_new(char* name, char symbol);
-void player_free(Player** player);
-char* player_to_string(Player* player);
-void player_print(Player* player);
-
-void cpu_get_pos_to_mark(Matrix* board);
 
 #endif
