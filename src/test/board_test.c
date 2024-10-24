@@ -6,7 +6,7 @@
 
 #include "../app/utils/io.h"
 #include "../app/utils/misc.h"
-#include "../app/models/board.h"
+#include "../app/models/models.h"
 
 // ####################
 // square_new

@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "../utils/io.h"
-#include "player.h"
+#include "models.h"
 
 Player* player_new(char* name, char symbol) {
   Player* player = malloc(sizeof(Player));

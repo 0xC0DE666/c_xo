@@ -8,8 +8,7 @@
 
 #include "utils/io.h"
 #include "utils/misc.h"
-#include "models/player.h"
-#include "models/board.h"
+#include "models/models.h"
 
 void scoreboard_print(Player* p1, Player* p2) {
   player_print(p1);

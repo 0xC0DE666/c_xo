@@ -2,10 +2,9 @@
 #include <stdio.h>
 
 #include "../utils/io.h"
-#include "board.h"
+#include "models.h"
 
 // SQUARE
-
 Square* square_new(Position position, char mark) {
   Square* square = malloc(sizeof(Square));
 
