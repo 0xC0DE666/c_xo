@@ -20,14 +20,14 @@ void player_free(Player** player);
 char* player_to_string(Player* player);
 void player_print(Player* player);
 
-void cpu_get_pos_to_mark(Matrix* board);
+void cpu_get_pos_to_mark(Grid* board);
 
 // ####################
 // BOARD
 // ####################
 
 // SQUARE
-static const char BLANK = ' ';
+static const char UNMARKED = ' ';
 
 typedef struct {
   Position position;
@@ -37,21 +37,21 @@ typedef struct {
 Square* square_new(Position position, char mark);
 void square_free(Square** const square);
 char* square_to_string(Square* const square);
-bool square_is_blank(Matrix* const board, Position* const position);
+bool square_is_blank(Grid* const board, Position* const position);
 void square_clear(Square* const square);
 void square_mark(Square* const square, char mark);
 
 // BOARD
-Matrix* board_new(int rows, int columns);
-void board_free(Matrix** const board);
-void board_clear(Matrix* const board);
-void board_print(Matrix* const board);
-int board_mark(Matrix* const board, Position* const position, char mark);
+Grid* board_new(int rows, int columns);
+void board_free(Grid** const board);
+void board_clear(Grid* const board);
+void board_print(Grid* const board);
+int board_mark(Grid* const board, Position* const position, char mark);
 
-Position index_to_position(Matrix* const board, int index);
+Position index_to_position(Grid* const board, int index);
 
 // WIN
 bool win_line(Array* line, int n_to_win);
-bool win(Matrix* board, int n_to_win);
+bool win(Grid* board, int n_to_win);
 
 #endif

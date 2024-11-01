@@ -25,7 +25,7 @@ Test(square_new, _1) {
 // square_free
 // ####################
 Test(square_free, _1) {
-  Square* square = square_new(position_new(1, 2), BLANK);
+  Square* square = square_new(position_new(1, 2), UNMARKED);
 
   cr_assert_eq(square == NULL, false);
 
@@ -53,7 +53,7 @@ Test(square_to_string, _1) {
 // square_is_blank
 // ####################
 Test(square_is_blank, _1) {
-  Matrix* board = board_new(3, 3);
+  Grid* board = board_new(3, 3);
   Position pos;
 
   for (int i = 0; i < board->columns; ++i) {
@@ -81,16 +81,16 @@ Test(square_is_blank, _1) {
 // board_new
 // ####################
 Test(board_new, _1) {
-  Matrix* board = board_new(3, 3);
+  Grid* board = board_new(3, 3);
 
   for (int r = 0; r < board->rows; r++) {
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
-      Square* sqr = matrix_get(board, &pos).ok;
+      Square* sqr = grid_get(board, &pos).ok;
       cr_assert_eq(sqr != NULL, true);
       cr_assert_eq(sqr->position.row, r);
       cr_assert_eq(sqr->position.column, c);
-      cr_assert_eq(sqr->mark, BLANK);
+      cr_assert_eq(sqr->mark, UNMARKED);
     }
   }
 
@@ -101,7 +101,7 @@ Test(board_new, _1) {
 // board_free
 // ####################
 Test(board_free, _1) {
-  Matrix* board = board_new(3, 3);
+  Grid* board = board_new(3, 3);
 
   cr_assert_eq(board == NULL, false);
 
@@ -118,7 +118,7 @@ void mark_x(Square* sqr) {
 }
 
 bool marked(Square* sqr) {
-  return sqr->mark != BLANK;
+  return sqr->mark != UNMARKED;
 }
 
 void test_marked(Square* sqr) {
@@ -130,13 +130,13 @@ void test_unmarked(Square* sqr) {
 }
 
 Test(board_clear, _1) {
-  Matrix* board = board_new(3, 3);
-  matrix_for_each(board, (MatrixEachFn) mark_x);
-  matrix_for_each(board, (MatrixEachFn) test_marked);
+  Grid* board = board_new(3, 3);
+  grid_for_each(board, (GridEachFn) mark_x);
+  grid_for_each(board, (GridEachFn) test_marked);
 
   board_clear(board);
 
-  matrix_for_each(board, (MatrixEachFn) test_unmarked);
+  grid_for_each(board, (GridEachFn) test_unmarked);
 
   board_free(&board);
 }
@@ -145,7 +145,7 @@ Test(board_clear, _1) {
 // board_mark
 // ####################
 Test(board_mark, _1) {
-  Matrix* board = board_new(3, 3);
+  Grid* board = board_new(3, 3);
   Position pos = position_new(-1, 1);
 
   //fail: position invalid
@@ -156,7 +156,7 @@ Test(board_mark, _1) {
   pos.row = 1;
   res = board_mark(board, &pos, 'X');
   cr_assert_eq(res, 0);
-  Square* sqr = matrix_get(board, &pos).ok;
+  Square* sqr = grid_get(board, &pos).ok;
   cr_assert_eq(sqr->mark, 'X');
 
   //fail: already marked
@@ -170,7 +170,7 @@ Test(board_mark, _1) {
 // index_to_position
 // ####################
 Test(index_to_position, _1) {
-  Matrix* board = board_new(3, 3);
+  Grid* board = board_new(3, 3);
 
   int i = 1;
   for (int r = 0; r < board->rows; ++r) {
@@ -193,7 +193,7 @@ Test(win_line, false_blank_sqr) {
   Array* line = array_new(3).ok;
 
   for (int i = 0; i < line->capacity; i++) {
-    Square* sqr = square_new(position_new(0, i), i == 0 ? BLANK : 'X');
+    Square* sqr = square_new(position_new(0, i), i == 0 ? UNMARKED : 'X');
     array_append(line, sqr);
   }
   
@@ -238,9 +238,9 @@ Test(win_line, true_win) {
 // win
 // ####################
 Test(win, win_straight_lines) {
-  Matrix* board = board_new(3, 3);
+  Grid* board = board_new(3, 3);
 
-  // char* str_board = matrix_to_string(board, (ToStringFn) square_to_string);
+  // char* str_board = grid_to_string(board, (ToStringFn) square_to_string);
   
   int n_to_win = 3;
   for (int r = 0; r < board->rows; r++) {
@@ -249,11 +249,11 @@ Test(win, win_straight_lines) {
     ///////////////
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
-      Square* sqr = (Square*) matrix_get(board, &pos).ok;
+      Square* sqr = (Square*) grid_get(board, &pos).ok;
       sqr->mark = 'X';
     }
 
-    // str_board = matrix_to_string(board, (ToStringFn) square_to_string);
+    // str_board = grid_to_string(board, (ToStringFn) square_to_string);
     // printf("test r%d\n%s\n", r, str_board);
 
     bool result = win(board, n_to_win);
@@ -261,8 +261,8 @@ Test(win, win_straight_lines) {
 
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
-      Square* sqr = (Square*) matrix_get(board, &pos).ok;
-      sqr->mark = BLANK;
+      Square* sqr = (Square*) grid_get(board, &pos).ok;
+      sqr->mark = UNMARKED;
     }
     // printf("\n\n");
 
@@ -271,11 +271,11 @@ Test(win, win_straight_lines) {
     ///////////////
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(c, r);
-      Square* sqr = (Square*) matrix_get(board, &pos).ok;
+      Square* sqr = (Square*) grid_get(board, &pos).ok;
       sqr->mark = 'X';
     }
 
-    // str_board = matrix_to_string(board, (ToStringFn) square_to_string);
+    // str_board = grid_to_string(board, (ToStringFn) square_to_string);
     // printf("test c%d\n%s\n", r, str_board);
 
     result = win(board, n_to_win);
@@ -283,8 +283,8 @@ Test(win, win_straight_lines) {
 
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(c, r);
-      Square* sqr = (Square*) matrix_get(board, &pos).ok;
-      sqr->mark = BLANK;
+      Square* sqr = (Square*) grid_get(board, &pos).ok;
+      sqr->mark = UNMARKED;
     }
     // printf("\n\n");
   }
@@ -294,15 +294,15 @@ Test(win, win_straight_lines) {
 
 
 Test(win, win_diagonal_lines) {
-  Matrix* board = board_new(3, 3);
+  Grid* board = board_new(3, 3);
 
   // test left diagonal
   for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, c);
-    Square* sqr = (Square*) matrix_get(board, &pos).ok;
+    Square* sqr = (Square*) grid_get(board, &pos).ok;
     sqr->mark = 'X';
   }
-  // printf("%s\n", matrix_to_string(board, (ToStringFn) square_to_string));
+  // printf("%s\n", grid_to_string(board, (ToStringFn) square_to_string));
 
   int n_to_win = 3;
   bool result = win(board, n_to_win);
@@ -312,8 +312,8 @@ Test(win, win_diagonal_lines) {
   // reset values
   for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, c);
-    Square* sqr = (Square*) matrix_get(board, &pos).ok;
-    sqr->mark = BLANK;
+    Square* sqr = (Square*) grid_get(board, &pos).ok;
+    sqr->mark = UNMARKED;
   }
 
 
@@ -321,10 +321,10 @@ Test(win, win_diagonal_lines) {
   int col = board->columns - 1;
   for (int c = 0; c < board->columns; c++) {
     Position pos = position_new(c, col--);
-    Square* sqr = (Square*) matrix_get(board, &pos).ok;
+    Square* sqr = (Square*) grid_get(board, &pos).ok;
     sqr->mark = 'X';
   }
-  // printf("%s\n", matrix_to_string(board, (ToStringFn) square_to_string));
+  // printf("%s\n", grid_to_string(board, (ToStringFn) square_to_string));
 
   result = win(board, n_to_win);
 

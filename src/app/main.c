@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-
 #include "../libs/c_structs.h"
+#include "../libs/raylib.h"
 
 #include "utils/utils.h"
 #include "models/models.h"
@@ -21,7 +21,7 @@ int main() {
 
   Player* p1 = player_new("Player 1", 'X');
   Player* p2 = player_new("Player 2", 'O');
-  Matrix* board = board_new(3, 3);
+  Grid* board = board_new(3, 3);
   
   int round_count = 1;
   int move_count = 0;
@@ -111,7 +111,7 @@ int main() {
 
   player_free(&p1);
   player_free(&p2);
-  matrix_free(&board, (FreeFn) square_free);
+  grid_free(&board, (FreeFn) square_free);
 
   return 0;
 }

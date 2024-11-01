@@ -41,53 +41,53 @@ char* square_to_string(Square* square) {
   return str;
 }
 
-bool square_is_blank(Matrix* board, Position* position) {
-  if (matrix_position_valid(board, position) == false) {
+bool square_is_blank(Grid* board, Position* position) {
+  if (grid_position_valid(board, position) == false) {
     return false;
   }
   
-  Square* sqr = matrix_get(board, position).ok;
-  return sqr->mark == BLANK;
+  Square* sqr = grid_get(board, position).ok;
+  return sqr->mark == UNMARKED;
 }
 
 void square_clear(Square* square) {
-  square->mark = BLANK;
+  square->mark = UNMARKED;
 }
 
 
 // BOARD
-Matrix* board_new(int rows, int columns) {
-  Matrix* board = matrix_new(rows, columns).ok;
+Grid* board_new(int rows, int columns) {
+  Grid* board = grid_new(rows, columns).ok;
 
   for (int r = 0; r < board->rows; r++) {
     for (int c = 0; c < board->columns; c++) {
       Position pos = position_new(r, c);
-      Square* sqr = square_new(pos, BLANK);
-      matrix_set(board, &pos, sqr);
+      Square* sqr = square_new(pos, UNMARKED);
+      grid_set(board, &pos, sqr);
     }
   }
 
   return board;
 }
 
-void board_free(Matrix** board) {
-  matrix_free(board, (FreeFn) square_free);
+void board_free(Grid** board) {
+  grid_free(board, (FreeFn) square_free);
 }
 
-void board_clear(Matrix* board) {
-  matrix_for_each(board, (MatrixEachFn) square_clear);
+void board_clear(Grid* board) {
+  grid_for_each(board, (GridEachFn) square_clear);
 }
 
-void board_print(Matrix* board) {
+void board_print(Grid* board) {
   int i = 0;
   for (int r = 0; r < board->rows; ++r) {
     printf("\t   ");
     for (int c = 0; c < board->columns; ++c) {
       ++i;
       Position pos = position_new(r, c);
-      Square* sqr = matrix_get(board, &pos).ok;
+      Square* sqr = grid_get(board, &pos).ok;
 
-      if (sqr->mark == BLANK) {
+      if (sqr->mark == UNMARKED) {
         printf(" %d ", i);
       } else {
         printf(" %c ", sqr->mark);
@@ -115,13 +115,13 @@ void board_print(Matrix* board) {
   }
 }
 
-int board_mark(Matrix* board, Position* position, char mark) {
-  if (matrix_position_valid(board, position) == false) {
+int board_mark(Grid* board, Position* position, char mark) {
+  if (grid_position_valid(board, position) == false) {
     return 1;
   }
   
-  Square* sqr = (Square*) matrix_get(board, position).ok;
-  if (sqr->mark != BLANK) {
+  Square* sqr = (Square*) grid_get(board, position).ok;
+  if (sqr->mark != UNMARKED) {
     return 1;
   }
 
@@ -129,7 +129,7 @@ int board_mark(Matrix* board, Position* position, char mark) {
   return 0;
 }
 
-Position index_to_position(Matrix* board, int index) {
+Position index_to_position(Grid* board, int index) {
   for (int r = 0; r < board->rows; ++r) {
     for (int c = 0; c < board->columns; ++c) {
       --index;
@@ -148,7 +148,7 @@ bool win_line(Array* line, int n_to_win) {
       Square* a = (Square*) array_get(line, i).ok;
       Square* b = (Square*) array_get(line, i + 1).ok;
 
-      bool blank_sqr = a->mark == BLANK || b->mark == BLANK;
+      bool blank_sqr = a->mark == UNMARKED || b->mark == UNMARKED;
       bool marks_differ = a->mark != b->mark;
 
       if (blank_sqr || marks_differ) {
@@ -160,7 +160,7 @@ bool win_line(Array* line, int n_to_win) {
   return true;
 }
 
-bool win_straight(Matrix* board, int n_to_win) {
+bool win_straight(Grid* board, int n_to_win) {
   // check straight lines
   Array* row = array_new(board->rows).ok;
   Array* col = array_new(board->columns).ok;
@@ -169,11 +169,11 @@ bool win_straight(Matrix* board, int n_to_win) {
   for (int r = 0; r < board->rows; ++r) {
     for (int c = 0; c < board->columns; ++c) {
       Position pos = position_new(r, c);
-      Square* sqr = matrix_get(board, &pos).ok;
+      Square* sqr = grid_get(board, &pos).ok;
       array_append(row, sqr);
 
       pos = position_new(c, r);
-      sqr = matrix_get(board, &pos).ok;
+      sqr = grid_get(board, &pos).ok;
       array_append(col, sqr);
     }
     // printf("win? %s\n", array_to_string(row, (ToStringFn) square_to_string));
@@ -198,7 +198,7 @@ bool win_straight(Matrix* board, int n_to_win) {
   return win;
 }
 
-bool win_diagonal(Matrix* board, int n_to_win) {
+bool win_diagonal(Grid* board, int n_to_win) {
   // check diagonal lines
   int left_row = 0;
   int left_col = 0;
@@ -211,10 +211,10 @@ bool win_diagonal(Matrix* board, int n_to_win) {
 
   for (int i = 0; i < board->rows; ++i) {
       Position left_pos = position_new(left_row, left_col);
-      Square* left_sqr = matrix_get(board, &left_pos).ok;
+      Square* left_sqr = grid_get(board, &left_pos).ok;
 
       Position right_pos = position_new(right_row, right_col);
-      Square* right_sqr = matrix_get(board, &right_pos).ok;
+      Square* right_sqr = grid_get(board, &right_pos).ok;
 
       array_append(left_line, left_sqr);
       array_append(right_line, right_sqr);
@@ -244,7 +244,7 @@ bool win_diagonal(Matrix* board, int n_to_win) {
   return win;
 }
 
-bool win(Matrix* board, int n_to_win) {
+bool win(Grid* board, int n_to_win) {
   if (board->size < n_to_win) {
     return false;
   }

@@ -46,4 +46,4 @@ void player_print(Player* player) {
   ); 
 }
 
-void cpu_get_pos_to_mark(Matrix* board) {}
+void cpu_get_pos_to_mark(Grid* board) {}
