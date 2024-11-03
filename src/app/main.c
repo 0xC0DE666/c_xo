@@ -3,9 +3,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#include <raylib.h>
-
 #include "../libs/c_structs.h"
+#include "../libs/raylib.h"
 
 #include "utils/utils.h"
 #include "models/models.h"
