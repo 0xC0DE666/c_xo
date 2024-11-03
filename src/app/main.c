@@ -3,8 +3,9 @@
 #include <stdbool.h>
 #include <unistd.h>
 
+#include <raylib.h>
+
 #include "../libs/c_structs.h"
-#include "../libs/raylib.h"
 
 #include "utils/utils.h"
 #include "models/models.h"
@@ -16,7 +17,7 @@ void scoreboard_print(Player* p1, Player* p2) {
   printf("\n\n");
 }
 
-int main() {
+void play() {
   printf("C XO\n");
 
   Player* p1 = player_new("Player 1", 'X');
@@ -112,6 +113,42 @@ int main() {
   player_free(&p1);
   player_free(&p2);
   grid_free(&board, (FreeFn) square_free);
+}
 
+int main() {
+    // Initialization
+  //--------------------------------------------------------------------------------------
+  const int screenWidth = 800;
+  const int screenHeight = 450;
+
+  InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+
+  SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+  //--------------------------------------------------------------------------------------
+
+  // Main game loop
+  while (!WindowShouldClose())    // Detect window close button or ESC key
+  {
+      // Update
+      //----------------------------------------------------------------------------------
+      // TODO: Update your variables here
+      //----------------------------------------------------------------------------------
+
+      // Draw
+      //----------------------------------------------------------------------------------
+      BeginDrawing();
+
+          ClearBackground(RAYWHITE);
+
+          DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+
+      EndDrawing();
+      //----------------------------------------------------------------------------------
+  }
+
+  // De-Initialization
+  //--------------------------------------------------------------------------------------
+  CloseWindow();        // Close window and OpenGL context
+  //--------------------------------------------------------------------------------------
   return 0;
 }

@@ -25,7 +25,7 @@ $(APP_SRCS):
 	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
 
 app: $(APP_OBJS);
-	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_OBJS) -L$(LIBS_DIR) -lc_structs -lraylib;
+	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_OBJS) -L$(LIBS_DIR) -lc_structs -lraylib -lm -ldl -lpthread -lrt -lGL;
 
 #------------------------------
 # TESTS
