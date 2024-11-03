@@ -19,7 +19,8 @@ clean:
 APP_DIRS := $(APP_DIR) $(APP_DIR)/models $(APP_DIR)/utils
 APP_SRCS := $(foreach dir, $(APP_DIRS), $(wildcard $(dir)/*.c))
 APP_OBJS := $(patsubst %.c, %.o, $(APP_SRCS))
-APP_OBJS_NO_MAIN := $(patsubst $(APP_DIR)/main.o, , $(APP_OBJS))
+APP_TEST_OBJS := $(patsubst $(APP_DIR)/main.o, , $(APP_OBJS))
+APP_TEST_OBJS := $(patsubst $(APP_DIR)/gui.o, , $(APP_TEST_OBJS))
 
 $(APP_SRCS):
 	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
@@ -39,7 +40,7 @@ $(TEST_SRCS):
 	$(CC) $(C_FLAGS) -c -o $(patsubst %.c, %.o, $@) $@;
 
 test: $(APP_OBJS) $(TEST_OBJS);
-	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_OBJS_NO_MAIN) $(TEST_OBJS) -L$(LIBS_DIR) -lc_structs -lcriterion;
+	$(CC) $(C_FLAGS) -o $(BIN_DIR)/$@ $(APP_TEST_OBJS) $(TEST_OBJS) -L$(LIBS_DIR) -lc_structs -lcriterion;
 
 #------------------------------
 # RELEASE
